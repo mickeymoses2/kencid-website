@@ -65,13 +65,6 @@ $contact = kcid_contacts();
 	</div>
 </footer>
 
-<?php $whatsapp_url = kcid_whatsapp_url( 'Hi KENCID, I would like to learn more about your courses.' ); ?>
-<aside class="whatsapp-chat" aria-label="WhatsApp chat">
-	<a class="whatsapp-chat__link" href="<?php echo esc_url( $whatsapp_url ); ?>" target="_blank" rel="noopener noreferrer" aria-label="Open Chatty on WhatsApp">
-		<span class="whatsapp-chat__icon" aria-hidden="true"><?php echo kcid_icon( 'whatsapp' ); ?></span>
-		<span class="whatsapp-chat__copy"><strong>Chatty</strong><span>Chat with KENCID</span></span>
-	</a>
-</aside>
 <?php wp_footer(); ?>
 </body>
 </html>

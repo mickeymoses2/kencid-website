@@ -12,8 +12,6 @@
   --kcid-line: #d9dee3;
   --kcid-paper: #ffffff;
   --kcid-soft: #f5f6f7;
-  --kcid-whatsapp: #25d366;
-  --kcid-whatsapp-dark: #128c7e;
   --kcid-radius: 8px;
   --kcid-shadow: 0 18px 50px rgba(5, 8, 9, 0.2);
   --kcid-container: min(1180px, calc(100vw - 48px));
@@ -1896,67 +1894,6 @@ p {
   color: var(--kcid-paper);
 }
 
-.whatsapp-chat {
-  position: fixed;
-  z-index: 20;
-  right: 1.5rem;
-  bottom: max(1.5rem, env(safe-area-inset-bottom));
-}
-
-.whatsapp-chat__link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.75rem;
-  min-height: 64px;
-  padding: 0.7rem 1rem 0.7rem 0.75rem;
-  border: 3px solid var(--kcid-paper);
-  border-radius: 999px;
-  background: var(--kcid-whatsapp);
-  color: var(--kcid-black);
-  box-shadow: 0 12px 30px rgba(5, 8, 9, 0.2);
-  transition: transform 160ms ease, background-color 160ms ease, box-shadow 160ms ease;
-}
-
-.whatsapp-chat__link:hover {
-  transform: translateY(-2px);
-  background: var(--kcid-whatsapp-dark);
-  color: var(--kcid-paper);
-  box-shadow: 0 16px 34px rgba(5, 8, 9, 0.27);
-}
-
-.whatsapp-chat__icon {
-  display: grid;
-  width: 42px;
-  height: 42px;
-  place-items: center;
-  border-radius: 50%;
-  background: var(--kcid-paper);
-  color: var(--kcid-whatsapp-dark);
-}
-
-.whatsapp-chat__icon svg {
-  width: 1.55rem;
-  height: 1.55rem;
-  fill: currentColor;
-  stroke: none;
-}
-
-.whatsapp-chat__copy {
-  display: grid;
-  gap: 0.05rem;
-  line-height: 1.1;
-}
-
-.whatsapp-chat__copy strong {
-  font-size: 0.95rem;
-  font-weight: 900;
-}
-
-.whatsapp-chat__copy span {
-  font-size: 0.72rem;
-  font-weight: 750;
-}
-
 .footer-main {
   display: grid;
   grid-template-columns: minmax(230px, 1.2fr) 0.8fr 1fr 1fr;
@@ -3326,24 +3263,4 @@ p {
     width: 100%;
   }
 
-  .whatsapp-chat {
-    right: 1rem;
-    bottom: max(1rem, env(safe-area-inset-bottom));
-  }
-
-  .whatsapp-chat__link {
-    min-height: 58px;
-    padding: 0.55rem 0.8rem 0.55rem 0.6rem;
-  }
-
-  .whatsapp-chat__icon {
-    width: 38px;
-    height: 38px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .whatsapp-chat__link {
-    transition: none;
-  }
 }

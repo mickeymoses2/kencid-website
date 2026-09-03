@@ -62,6 +62,13 @@ svg {
   stroke-width: 2;
 }
 
+/* Chaty supplies its own SVG artwork; keep the theme's global icon stroke from outlining it. */
+.chaty svg,
+.chaty svg * {
+  stroke: none;
+  stroke-width: 0;
+}
+
 button,
 input,
 select,

@@ -1,0 +1,19 @@
+# Local WordPress configuration and runtime data
+/wp-config.php
+/wp-content/uploads/
+/wp-content/cache/
+/wp-content/upgrade/
+/wp-content/languages/
+
+# Local QA output and browser profiles
+/.qa-screenshots/
+/test-results/
+
+# Local exports and binaries
+/*.zip
+/wp-cli.phar
+/*.png
+/*.jpg
+/*.jpeg
+/*.webp
+*.log

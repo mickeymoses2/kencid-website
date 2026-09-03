@@ -1,0 +1,78 @@
+:root {
+  color-scheme: light;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+}
+
+a {
+  transition: color 160ms ease, border-color 160ms ease, background-color 160ms ease;
+}
+
+a:hover {
+  color: var(--wp--preset--color--clay);
+}
+
+a:focus-visible,
+button:focus-visible,
+.wp-block-button__link:focus-visible {
+  outline: 3px solid var(--wp--preset--color--ochre);
+  outline-offset: 4px;
+}
+
+.site-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.site-main {
+  flex: 1;
+}
+
+.kencid-hero {
+  border-bottom: 1px solid color-mix(in srgb, var(--wp--preset--color--ink) 14%, transparent);
+}
+
+.kencid-meta {
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.kencid-list {
+  border-top: 1px solid color-mix(in srgb, var(--wp--preset--color--ink) 14%, transparent);
+}
+
+.kencid-list > * {
+  border-bottom: 1px solid color-mix(in srgb, var(--wp--preset--color--ink) 14%, transparent);
+  margin-block: 0;
+  padding-block: 1rem;
+}
+
+@media (max-width: 700px) {
+  .site-header .wp-block-group {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .site-header .wp-block-navigation {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+  }
+}

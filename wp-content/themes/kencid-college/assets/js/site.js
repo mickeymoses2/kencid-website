@@ -44,48 +44,53 @@
       }
     });
 
-    const aboutDropdown = nav.querySelector('.primary-nav__dropdown');
-    const aboutToggle = aboutDropdown?.querySelector('.primary-nav__toggle');
-    const aboutPanel = aboutDropdown?.querySelector('.nav-panel');
+    const dropdowns = Array.from(nav.querySelectorAll('.primary-nav__dropdown'));
 
-    if (aboutDropdown && aboutToggle && aboutPanel) {
-      const setAboutState = (isOpen) => {
-        aboutToggle.setAttribute('aria-expanded', String(isOpen));
-        aboutPanel.hidden = !isOpen;
+    dropdowns.forEach((dropdown) => {
+      const dropdownToggle = dropdown.querySelector('.primary-nav__toggle');
+      const dropdownPanel = dropdown.querySelector('.nav-panel');
+
+      if (!dropdownToggle || !dropdownPanel) {
+        return;
+      }
+
+      const setDropdownState = (isOpen) => {
+        dropdownToggle.setAttribute('aria-expanded', String(isOpen));
+        dropdownPanel.hidden = !isOpen;
       };
 
-      aboutDropdown.addEventListener('focusout', (event) => {
-        if (!aboutDropdown.contains(event.relatedTarget)) {
-          setAboutState(false);
+      dropdown.addEventListener('focusout', (event) => {
+        if (!dropdown.contains(event.relatedTarget)) {
+          setDropdownState(false);
         }
       });
 
       document.addEventListener('click', (event) => {
-        if (!aboutDropdown.contains(event.target)) {
-          setAboutState(false);
+        if (!dropdown.contains(event.target)) {
+          setDropdownState(false);
         }
       });
 
-      aboutToggle.addEventListener('keydown', (event) => {
+      dropdownToggle.addEventListener('keydown', (event) => {
         if (event.key === 'ArrowDown') {
           event.preventDefault();
-          setAboutState(true);
-          aboutPanel.querySelector('a')?.focus();
+          setDropdownState(true);
+          dropdownPanel.querySelector('a')?.focus();
         }
 
         if (event.key === 'Escape') {
-          setAboutState(false);
+          setDropdownState(false);
         }
       });
 
-      aboutPanel.addEventListener('keydown', (event) => {
+      dropdownPanel.addEventListener('keydown', (event) => {
         if (event.key === 'Escape') {
           event.preventDefault();
-          setAboutState(false);
-          aboutToggle.focus();
+          setDropdownState(false);
+          dropdownToggle.focus();
         }
       });
-    }
+    });
   }
 
   const heroSlider = document.querySelector('[data-hero-slider]');

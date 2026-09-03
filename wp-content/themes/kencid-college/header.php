@@ -59,7 +59,17 @@
 					<a href="<?php echo kcid_page_url( 'partners' ); ?>">Partners</a>
 				</div>
 			</div>
-			<a href="<?php echo kcid_page_url( 'programs' ); ?>">Schools</a>
+			<div class="primary-nav__dropdown">
+				<button class="primary-nav__toggle" type="button" aria-controls="schools-submenu" aria-expanded="false" aria-haspopup="true">
+					<span>Schools</span>
+					<?php echo kcid_icon( 'chevron-down' ); ?>
+				</button>
+				<div class="nav-panel nav-panel--schools" id="schools-submenu" hidden>
+					<?php foreach ( kcid_schools() as $school ) : ?>
+						<a href="<?php echo esc_url( kcid_page_url( 'programs' ) . '#' . sanitize_title( $school ) ); ?>"><?php echo esc_html( $school ); ?></a>
+					<?php endforeach; ?>
+				</div>
+			</div>
 			<a href="<?php echo kcid_page_url( 'programs' ); ?>">Courses</a>
 			<a href="<?php echo kcid_page_url( 'student-life' ); ?>">Student Life</a>
 			<a href="<?php echo kcid_page_url( 'about-us' ); ?>">Resources</a>

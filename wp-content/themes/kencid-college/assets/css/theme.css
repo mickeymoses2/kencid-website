@@ -461,6 +461,10 @@ p {
   transform: translateX(-50%);
 }
 
+.nav-panel--schools {
+  width: 300px;
+}
+
 .nav-panel[hidden] {
   display: none;
 }

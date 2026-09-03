@@ -31,7 +31,7 @@ function kcid_schools(): array {
 		'School of Creative & Performing Arts',
 		'School of Health Sciences',
 		'School of Hospitality Management',
-		'School of Trades and Technology',
+		'School of Trades & Technology',
 	);
 }
 

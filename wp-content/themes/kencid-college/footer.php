@@ -27,7 +27,7 @@ $contact = kcid_contacts();
 	<div class="container footer-main">
 		<div class="footer-brand">
 			<a class="brand" href="<?php echo esc_url( home_url( '/' ) ); ?>">
-				<img class="brand__image" src="<?php echo esc_url( kcid_asset( 'img/kencid-logo.png' ) ); ?>" alt="Kenya College of Interior Design" />
+				<img class="brand__image" src="<?php echo esc_url( kcid_asset( 'img/kencid-logo-mustard.png' ) ); ?>" alt="Kenya College of Interior Design" />
 			</a>
 			<p>Empowering creatives to design spaces, shape stories, and move the world.</p>
 			<div class="socials" aria-label="<?php esc_attr_e( 'Social links', 'kencid-college' ); ?>">
@@ -42,6 +42,7 @@ $contact = kcid_contacts();
 			<a href="<?php echo kcid_page_url( 'programs' ); ?>">Programs</a>
 			<a href="<?php echo kcid_page_url( 'admissions' ); ?>">Admissions</a>
 			<a href="<?php echo kcid_page_url( 'student-life' ); ?>">Student Life</a>
+			<a href="<?php echo kcid_page_url( 'projects' ); ?>">Projects</a>
 			<a href="<?php echo kcid_page_url( 'about-us' ); ?>">About Us</a>
 			<a href="<?php echo kcid_page_url( 'contact' ); ?>">Contact</a>
 		</nav>

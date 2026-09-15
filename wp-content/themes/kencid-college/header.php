@@ -38,7 +38,7 @@
 	</div>
 	<div class="container site-header__inner">
 		<a class="brand" href="<?php echo esc_url( home_url( '/' ) ); ?>" aria-label="<?php esc_attr_e( 'Kenya College of Interior Design home', 'kencid-college' ); ?>">
-			<img class="brand__image" src="<?php echo esc_url( kcid_asset( 'img/kencid-logo.png' ) ); ?>" alt="Kenya College of Interior Design" />
+			<img class="brand__image" src="<?php echo esc_url( kcid_asset( 'img/kencid-logo-mustard.png' ) ); ?>" alt="Kenya College of Interior Design" />
 		</a>
 
 		<button class="menu-toggle" type="button" aria-controls="primary-navigation" aria-expanded="false">
@@ -66,14 +66,18 @@
 				</button>
 				<div class="nav-panel nav-panel--schools" id="schools-submenu" hidden>
 					<?php foreach ( kcid_schools() as $school ) : ?>
-						<a href="<?php echo esc_url( kcid_page_url( 'programs' ) . '#' . sanitize_title( $school ) ); ?>"><?php echo esc_html( $school ); ?></a>
+						<a class="nav-school-link" href="<?php echo esc_url( kcid_school_url( $school ) ); ?>">
+							<span class="nav-school-link__icon" aria-hidden="true"><?php echo kcid_icon( 'school' ); ?></span>
+							<span><?php echo esc_html( kcid_school_label( $school ) ); ?></span>
+						</a>
 					<?php endforeach; ?>
 				</div>
 			</div>
 			<a href="<?php echo kcid_page_url( 'programs' ); ?>">Courses</a>
 			<a href="<?php echo kcid_page_url( 'student-life' ); ?>">Student Life</a>
+			<a href="<?php echo kcid_page_url( 'projects' ); ?>">Projects</a>
 			<a href="<?php echo kcid_page_url( 'about-us' ); ?>">Resources</a>
-			<a href="<?php echo kcid_page_url( 'student-life' ); ?>">Events</a>
+			<a href="<?php echo kcid_page_url( 'events' ); ?>">Events</a>
 			<a href="<?php echo kcid_page_url( 'contact' ); ?>">Contact us</a>
 		</nav>
 

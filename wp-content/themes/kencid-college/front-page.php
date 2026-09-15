@@ -7,6 +7,12 @@
 
 get_header();
 $schools = array_slice( kcid_schools(), 0, 8 );
+$next_intake = kcid_next_intake();
+$countdown_remaining = max( 0, $next_intake['timestamp'] - time() );
+$countdown_days = floor( $countdown_remaining / DAY_IN_SECONDS );
+$countdown_hours = floor( ( $countdown_remaining % DAY_IN_SECONDS ) / HOUR_IN_SECONDS );
+$countdown_minutes = floor( ( $countdown_remaining % HOUR_IN_SECONDS ) / MINUTE_IN_SECONDS );
+$countdown_seconds = $countdown_remaining % MINUTE_IN_SECONDS;
 $academic_partners = array(
 	array( 'name' => 'Kenya National Examinations Council', 'logo' => 'partner-knec.png' ),
 	array( 'name' => 'TVET Curriculum Development, Assessment and Certification Council', 'logo' => 'partner-academic-mark.png' ),
@@ -145,21 +151,21 @@ $blog_posts = array(
 				<div class="intake-section__accent" aria-hidden="true"></div>
 				<p class="intake-section__copy">Join our upcoming intake and take the first step towards a creative and successful future.</p>
 
-				<div class="intake-countdown" data-countdown-target="2026-09-30T00:00:00+03:00" role="group" aria-label="Countdown to the September 2026 intake">
+				<div class="intake-countdown" data-countdown-target="<?php echo esc_attr( $next_intake['iso'] ); ?>" role="group" aria-label="Countdown to the <?php echo esc_attr( $next_intake['label'] ); ?> intake">
 					<div class="intake-countdown__item">
-						<strong data-countdown-unit="days">18</strong>
+						<strong data-countdown-unit="days"><?php echo esc_html( str_pad( (string) $countdown_days, 2, '0', STR_PAD_LEFT ) ); ?></strong>
 						<span>Days</span>
 					</div>
 					<div class="intake-countdown__item">
-						<strong data-countdown-unit="hours">07</strong>
+						<strong data-countdown-unit="hours"><?php echo esc_html( str_pad( (string) $countdown_hours, 2, '0', STR_PAD_LEFT ) ); ?></strong>
 						<span>Hrs</span>
 					</div>
 					<div class="intake-countdown__item">
-						<strong data-countdown-unit="minutes">42</strong>
+						<strong data-countdown-unit="minutes"><?php echo esc_html( str_pad( (string) $countdown_minutes, 2, '0', STR_PAD_LEFT ) ); ?></strong>
 						<span>Mins</span>
 					</div>
 					<div class="intake-countdown__item">
-						<strong data-countdown-unit="seconds">35</strong>
+						<strong data-countdown-unit="seconds"><?php echo esc_html( str_pad( (string) $countdown_seconds, 2, '0', STR_PAD_LEFT ) ); ?></strong>
 						<span>Secs</span>
 					</div>
 				</div>
@@ -174,10 +180,10 @@ $blog_posts = array(
 			</div>
 
 			<div class="intake-section__visual">
-				<img src="<?php echo esc_url( kcid_asset( 'img/cta-students-cutout-alpha.png' ) ); ?>" alt="Smiling KENCID students holding design books" loading="lazy" />
+				<img src="<?php echo esc_url( kcid_asset( 'img/intake-woman-cutout-alpha.png' ) ); ?>" alt="Smiling KENCID student holding design notebooks" loading="lazy" />
 				<div class="intake-starts">
 					<span class="intake-starts__icon" aria-hidden="true"><?php echo kcid_icon( 'cap' ); ?></span>
-					<span class="intake-starts__copy"><span>Intake Starts</span><strong>September 2026</strong></span>
+					<span class="intake-starts__copy"><span>Intake Starts</span><strong data-intake-label><?php echo esc_html( $next_intake['label'] ); ?></strong></span>
 				</div>
 			</div>
 		</div>
@@ -195,7 +201,7 @@ $blog_posts = array(
 			<p class="schools-search__status" id="school-search-status" role="status" aria-live="polite"></p>
 			<div class="schools-section__grid">
 				<?php foreach ( $schools as $index => $school ) : ?>
-					<a class="school-card" href="<?php echo kcid_page_url( 'programs' ); ?>" aria-label="Explore <?php echo esc_attr( $school ); ?>">
+					<a class="school-card" href="<?php echo esc_url( add_query_arg( 'school', sanitize_title( $school ), kcid_page_url( 'programs' ) ) ); ?>" aria-label="Explore <?php echo esc_attr( $school ); ?>">
 						<span class="school-card__image" aria-hidden="true">
 							<span class="school-card__index"><?php echo esc_html( str_pad( (string) ( $index + 1 ), 2, '0', STR_PAD_LEFT ) ); ?></span>
 							<span class="school-card__title"><?php echo esc_html( $school ); ?></span>

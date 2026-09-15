@@ -1,0 +1,10 @@
+# KENCID local WordPress permalink rules.
+# Keep this file in the document root so course URLs such as /architecture/
+# reach the same page template as the rest of the site.
+<IfModule mod_rewrite.c>
+	RewriteEngine On
+	RewriteRule ^index\.php$ - [L]
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteRule . index.php [L]
+</IfModule>

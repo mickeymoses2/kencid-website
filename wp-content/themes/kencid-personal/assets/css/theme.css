@@ -21,7 +21,7 @@ a:hover {
 a:focus-visible,
 button:focus-visible,
 .wp-block-button__link:focus-visible {
-  outline: 3px solid var(--wp--preset--color--ochre);
+  outline: 3px solid var(--wp--preset--color--mustard);
   outline-offset: 4px;
 }
 

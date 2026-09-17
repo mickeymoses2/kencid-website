@@ -7,6 +7,16 @@
 
 get_header();
 $schools = array_slice( kcid_schools(), 0, 8 );
+$school_images = array(
+	'School of Building Sciences'              => 'kencid-source/school-building-sciences.jpg',
+	'School of Design'                         => 'kencid-source/school-design.jpg',
+	'School of Media and Communication'        => 'kencid-source/school-media.jpeg',
+	'School of Information Technology'         => 'kencid-source/school-information-technology.jpg',
+	'School of Engineering & Automotive Design' => 'kencid-source/school-engineering.jpg',
+	'School of Business Management'            => 'kencid-source/school-business.webp',
+	'School of Creative & Performing Arts'     => 'kencid-source/school-creative-performing-arts.jpg',
+	'School of Health Sciences'                 => 'kencid-source/school-health-sciences.webp',
+);
 $next_intake = kcid_next_intake();
 $countdown_remaining = max( 0, $next_intake['timestamp'] - time() );
 $countdown_days = floor( $countdown_remaining / DAY_IN_SECONDS );
@@ -106,7 +116,7 @@ $blog_posts = array(
 					aria-roledescription="slide"
 					aria-label="<?php echo esc_attr( (string) ( $index + 1 ) . ' of ' . count( $hero_slides ) . ': ' . $slide['title'] ); ?>"
 				>
-					<div class="hero__media" aria-hidden="true" style="--hero-image: url('<?php echo esc_url( kcid_asset( 'img/' . $slide['image'] ) ); ?>');"></div>
+					<div class="hero__media" aria-hidden="true" data-hero-image="<?php echo esc_url( kcid_asset( 'img/' . $slide['image'] ) ); ?>"<?php if ( 0 === $index ) : ?> style="--hero-image: url('<?php echo esc_url( kcid_asset( 'img/' . $slide['image'] ) ); ?>');"<?php endif; ?>></div>
 					<div class="container hero__content">
 						<p class="hero__welcome"><?php echo esc_html( $slide['eyebrow'] ); ?></p>
 						<h1<?php echo 0 === $index ? ' id="hero-title"' : ''; ?>><?php echo esc_html( $slide['title'] ); ?></h1>
@@ -129,7 +139,7 @@ $blog_posts = array(
 	<section class="about-section" aria-labelledby="about-section-title">
 		<div class="design-wide about-section__grid">
 			<div class="about-section__media">
-				<img src="<?php echo esc_url( kcid_asset( 'img/about-students.png' ) ); ?>" alt="KENCID students wearing the college colours together" />
+				<img src="<?php echo esc_url( kcid_asset( 'img/about-students.png' ) ); ?>" alt="KENCID students wearing the college colours together" loading="lazy" decoding="async" width="1254" height="1254" />
 			</div>
 			<div class="about-section__content">
 				<p class="script-label">Who we are</p>
@@ -147,9 +157,14 @@ $blog_posts = array(
 					<span class="intake-kicker__icon" aria-hidden="true"><?php echo kcid_icon( 'calendar' ); ?></span>
 					<span>New Intake</span>
 				</p>
-				<h2 id="intake-section-title"><span>Your Future</span><strong>Starts Now!</strong></h2>
+				<h2 id="intake-section-title"><span data-intake-headline><?php echo esc_html( $next_intake['name'] . ' Intake' ); ?></span><strong>Ongoing</strong></h2>
 				<div class="intake-section__accent" aria-hidden="true"></div>
-				<p class="intake-section__copy">Join our upcoming intake and take the first step towards a creative and successful future.</p>
+				<p class="intake-section__copy">Applications are open for the <?php echo esc_html( $next_intake['name'] ); ?> intake. Take the first step towards a creative and successful future.</p>
+				<p class="intake-date-pill">
+					<span class="intake-date-pill__icon" aria-hidden="true"><?php echo kcid_icon( 'cap' ); ?></span>
+					<span>Starts</span>
+					<strong data-intake-label><?php echo esc_html( $next_intake['label'] ); ?></strong>
+				</p>
 
 				<div class="intake-countdown" data-countdown-target="<?php echo esc_attr( $next_intake['iso'] ); ?>" role="group" aria-label="Countdown to the <?php echo esc_attr( $next_intake['label'] ); ?> intake">
 					<div class="intake-countdown__item">
@@ -171,15 +186,14 @@ $blog_posts = array(
 				</div>
 
 				<div class="intake-actions">
-					<a class="button button--intake" href="<?php echo kcid_page_url( 'apply-now' ); ?>">Apply Now <?php echo kcid_icon( 'arrow' ); ?></a>
-					<a class="intake-call" href="tel:+254797888111">
-						<span class="intake-call__icon" aria-hidden="true"><?php echo kcid_icon( 'phone' ); ?></span>
-						<span class="intake-call__copy"><span>Questions? Call us</span><strong>+254 797 888 111</strong></span>
-					</a>
+					<a class="button button--intake" href="<?php echo kcid_page_url( 'apply-now' ); ?>">Apply Now <?php echo kcid_icon( 'arrow-right' ); ?></a>
 				</div>
 			</div>
 
 			<div class="intake-section__visual">
+				<span class="intake-section__rays" aria-hidden="true"><i></i><i></i><i></i></span>
+				<span class="intake-section__blue-marks" aria-hidden="true"><i></i><i></i><i></i></span>
+				<span class="intake-section__dots" aria-hidden="true"></span>
 				<img src="<?php echo esc_url( kcid_asset( 'img/intake-woman-cutout-alpha.png' ) ); ?>" alt="Smiling KENCID student holding design notebooks" loading="lazy" />
 				<div class="intake-starts">
 					<span class="intake-starts__icon" aria-hidden="true"><?php echo kcid_icon( 'cap' ); ?></span>
@@ -197,12 +211,14 @@ $blog_posts = array(
 				<label class="screen-reader-text" for="school-search">Search schools</label>
 				<svg class="schools-search__icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m16 16 5 5"></path></svg>
 				<input id="school-search" type="search" placeholder="Search schools" autocomplete="off" />
+				<button class="schools-search__submit" type="submit" aria-label="Search schools"><?php echo kcid_icon( 'arrow-right' ); ?></button>
 			</form>
 			<p class="schools-search__status" id="school-search-status" role="status" aria-live="polite"></p>
 			<div class="schools-section__grid">
 				<?php foreach ( $schools as $index => $school ) : ?>
 					<a class="school-card" href="<?php echo esc_url( add_query_arg( 'school', sanitize_title( $school ), kcid_page_url( 'programs' ) ) ); ?>" aria-label="Explore <?php echo esc_attr( $school ); ?>">
 						<span class="school-card__image" aria-hidden="true">
+							<img src="<?php echo esc_url( kcid_asset( 'img/' . ( $school_images[ $school ] ?? 'kencid-source/school-building-sciences.jpg' ) ) ); ?>" alt="" loading="lazy" decoding="async" width="218" height="265" />
 							<span class="school-card__index"><?php echo esc_html( str_pad( (string) ( $index + 1 ), 2, '0', STR_PAD_LEFT ) ); ?></span>
 							<span class="school-card__title"><?php echo esc_html( $school ); ?></span>
 						</span>
@@ -221,7 +237,7 @@ $blog_posts = array(
 				<a class="button button--primary" href="<?php echo kcid_page_url( 'apply-now' ); ?>">Apply Now <?php echo kcid_icon( 'arrow' ); ?></a>
 			</div>
 			<div class="why-choose-us__media">
-				<img src="<?php echo esc_url( kcid_asset( 'img/why-students.png' ) ); ?>" alt="KENCID students and staff celebrating together" />
+				<img src="<?php echo esc_url( kcid_asset( 'img/why-students.png' ) ); ?>" alt="KENCID students and staff celebrating together" loading="lazy" decoding="async" width="1254" height="1254" />
 			</div>
 		</div>
 	</section>

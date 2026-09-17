@@ -452,6 +452,12 @@ function kcid_course_catalog(): array {
  * so cards and detail pages never fall back to a repeated school image.
  */
 function kcid_catalog_programs(): array {
+	static $cached_programs = null;
+
+	if ( null !== $cached_programs ) {
+		return $cached_programs;
+	}
+
 	$programs    = array();
 	$next_intake = kcid_next_intake();
 
@@ -485,7 +491,8 @@ function kcid_catalog_programs(): array {
 		}
 	}
 
-	return $programs;
+	$cached_programs = $programs;
+	return $cached_programs;
 }
 
 function kcid_reasons(): array {

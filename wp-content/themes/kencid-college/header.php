@@ -60,9 +60,9 @@
 				</div>
 			</div>
 			<div class="primary-nav__dropdown">
-				<button class="primary-nav__toggle" type="button" aria-controls="schools-submenu" aria-expanded="false" aria-haspopup="true">
+				<button class="primary-nav__toggle primary-nav__toggle--schools" type="button" aria-controls="schools-submenu" aria-expanded="false" aria-haspopup="true">
 					<span>Schools</span>
-					<?php echo kcid_icon( 'chevron-down' ); ?>
+					<?php echo kcid_icon( 'school' ); ?>
 				</button>
 				<div class="nav-panel nav-panel--schools" id="schools-submenu" hidden>
 					<?php foreach ( kcid_schools() as $school ) : ?>

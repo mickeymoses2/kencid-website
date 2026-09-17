@@ -87,7 +87,19 @@
         return;
       }
 
+      let closeTimer;
+      const cancelScheduledClose = () => {
+        if (closeTimer) {
+          window.clearTimeout(closeTimer);
+          closeTimer = undefined;
+        }
+      };
+
       const setDropdownState = (isOpen) => {
+        if (isOpen) {
+          cancelScheduledClose();
+        }
+
         dropdownToggle.setAttribute('aria-expanded', String(isOpen));
         dropdownPanel.hidden = !isOpen;
       };
@@ -96,13 +108,19 @@
 
       dropdown.addEventListener('pointerenter', (event) => {
         if (supportsDesktopHover.matches && event.pointerType === 'mouse') {
+          cancelScheduledClose();
           setDropdownState(true);
         }
       });
 
       dropdown.addEventListener('pointerleave', (event) => {
         if (supportsDesktopHover.matches && event.pointerType === 'mouse' && !dropdown.contains(document.activeElement)) {
-          setDropdownState(false);
+          cancelScheduledClose();
+          closeTimer = window.setTimeout(() => {
+            if (!dropdown.matches(':hover') && !dropdown.contains(document.activeElement)) {
+              setDropdownState(false);
+            }
+          }, 250);
         }
       });
 
@@ -180,6 +198,13 @@
 
       slides.forEach((slide, index) => {
         const isActive = index === activeIndex;
+        const media = slide.querySelector('.hero__media');
+
+        if (isActive && media && !media.style.getPropertyValue('--hero-image')) {
+          const image = media.dataset.heroImage;
+          if (image) media.style.setProperty('--hero-image', `url("${image}")`);
+        }
+
         slide.classList.toggle('is-active', isActive);
         slide.setAttribute('aria-hidden', String(!isActive));
       });
@@ -238,11 +263,13 @@
     startAutoplay();
   }
 
+  const schoolSearchForm = document.querySelector('.schools-search');
   const schoolSearch = document.querySelector('#school-search');
   const schoolCards = Array.from(document.querySelectorAll('.school-card'));
   const searchStatus = document.querySelector('#school-search-status');
 
   if (schoolSearch && schoolCards.length) {
+    schoolSearchForm?.addEventListener('submit', (event) => event.preventDefault());
     schoolSearch.addEventListener('input', () => {
       const query = schoolSearch.value.trim().toLowerCase();
       let visibleCount = 0;
@@ -554,7 +581,8 @@
       { month: 5, name: 'May', day: 31 },
       { month: 9, name: 'September', day: 30 },
     ];
-    const intakeLabel = countdown.closest('.intake-section')?.querySelector('[data-intake-label]');
+    const intakeLabels = countdown.closest('.intake-section')?.querySelectorAll('[data-intake-label]') || [];
+    const intakeHeadline = countdown.closest('.intake-section')?.querySelector('[data-intake-headline]');
     const units = {
       days: countdown.querySelector('[data-countdown-unit="days"]'),
       hours: countdown.querySelector('[data-countdown-unit="hours"]'),
@@ -608,7 +636,10 @@
         activeIntake = nextIntake;
         countdown.dataset.countdownTarget = new Date(nextIntake.time).toISOString();
         countdown.setAttribute('aria-label', `Countdown to the ${nextIntake.label} intake`);
-        if (intakeLabel) intakeLabel.textContent = nextIntake.label;
+        intakeLabels.forEach((intakeLabel) => {
+          intakeLabel.textContent = nextIntake.label;
+        });
+        if (intakeHeadline) intakeHeadline.textContent = `${nextIntake.name} Intake`;
       }
 
       const remaining = Math.max(0, activeIntake.time - Date.now());

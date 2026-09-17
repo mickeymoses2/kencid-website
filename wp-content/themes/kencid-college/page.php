@@ -108,14 +108,64 @@ $next_intake = kcid_next_intake();
 			$programs = $school ? array_values( array_filter( $all_programs, function ( $program ) use ( $school ) { return $program['school'] === $school['name']; } ) ) : $all_programs;
 			$school_label = $school ? kcid_school_label( $school['name'] ) : '';
 			$popular_searches = $school ? array_slice( $school['courses'], 0, 5 ) : array( 'Business Management', 'Accounting', 'Marketing', 'Entrepreneurship', 'Human Resource Management' );
+			$course_explorer = static function () use ( $school, $school_label, $popular_searches, $programs ): void {
+				?>
+				<div class="course-hero-explorer">
+					<div class="section-heading-row course-hero-explorer__heading">
+						<div>
+							<p class="eyebrow eyebrow--blue"><?php echo $school ? 'School course explorer' : 'Course explorer'; ?></p>
+							<h2 id="course-finder-title"><?php echo $school ? 'Explore ' . esc_html( $school_label ) . '.' : 'Find the course that fits.'; ?></h2>
+							<?php if ( $school ) : ?><p class="course-finder__school-intro"><?php echo esc_html( $school['intro'] ); ?></p><?php endif; ?>
+						</div>
+						<?php if ( $school ) : ?>
+							<a class="button button--dark" href="<?php echo esc_url( kcid_page_url( 'programs' ) ); ?>">View all schools <?php echo kcid_icon( 'arrow' ); ?></a>
+						<?php else : ?>
+							<a class="button button--dark" href="<?php echo esc_url( kcid_page_url( 'admissions' ) ); ?>">Ask about a course <?php echo kcid_icon( 'arrow' ); ?></a>
+						<?php endif; ?>
+					</div>
+					<div class="course-finder__controls">
+						<div class="course-finder__searchbar">
+							<label class="course-search">
+								<span class="screen-reader-text">Search courses</span>
+								<span class="course-search__icon"><?php echo kcid_icon( 'search' ); ?></span>
+								<input id="course-search" type="search" placeholder="<?php echo esc_attr( $school ? 'Search ' . $school_label . ' courses...' : 'Search courses, skills, or schools...' ); ?>" autocomplete="off" />
+							</label>
+							<?php if ( ! $school ) : ?>
+								<label class="course-filter">
+									<span class="screen-reader-text">Filter by school</span>
+									<span class="course-filter__icon"><?php echo kcid_icon( 'school' ); ?></span>
+									<select id="course-school-filter">
+										<option value="">All schools</option>
+										<?php foreach ( kcid_schools() as $catalog_school ) : ?>
+											<option value="<?php echo esc_attr( strtolower( $catalog_school ) ); ?>"><?php echo esc_html( $catalog_school ); ?></option>
+										<?php endforeach; ?>
+									</select>
+									<span class="course-filter__chevron"><?php echo kcid_icon( 'chevron-down' ); ?></span>
+								</label>
+							<?php endif; ?>
+						</div>
+						<div class="course-finder__popular" aria-label="Popular course searches">
+							<span class="course-finder__popular-label">Popular searches:</span>
+							<?php foreach ( $popular_searches as $popular_search ) : ?>
+								<button type="button" class="course-finder__tag" data-course-search="<?php echo esc_attr( $popular_search ); ?>"><?php echo esc_html( $popular_search ); ?></button>
+							<?php endforeach; ?>
+						</div>
+					</div>
+					<p class="course-finder__status" id="course-search-status" aria-live="polite"><?php echo esc_html( count( $programs ) . ' courses' ); ?></p>
+				</div>
+				<?php
+			};
 			kcid_render_page_header(
 				$school ? 'School of ' . $school_label : 'Programs & courses',
-				$school ? 'Courses in ' . $school_label . '.' : 'Find your creative direction.',
+				$school ? 'Courses in ' . $school_label . '.' : '',
 				$school ? $school['intro'] : 'Explore the current KENCID course catalog across ten schools. Search by course or filter by school to find your next step.',
-				$school ? $school['image'] : 'course-listing-hero.png'
+				$school ? $school['image'] : 'course-listing-hero.png',
+				'',
+				'programs',
+				$course_explorer
 			);
 			?>
-			<section class="section-pad course-finder<?php echo $school ? ' course-finder--school' : ''; ?>" aria-labelledby="course-finder-title"><div class="container"><div class="section-heading-row"><div><p class="eyebrow eyebrow--blue"><?php echo $school ? 'School course explorer' : 'Course explorer'; ?></p><h2 id="course-finder-title"><?php echo $school ? 'Explore ' . esc_html( $school_label ) . '.' : 'Find the course that fits.'; ?></h2><?php if ( $school ) : ?><p class="course-finder__school-intro"><?php echo esc_html( $school['intro'] ); ?></p><?php endif; ?></div><?php if ( $school ) : ?><a class="button button--dark" href="<?php echo esc_url( kcid_page_url( 'programs' ) ); ?>">View all schools <?php echo kcid_icon( 'arrow' ); ?></a><?php else : ?><a class="button button--dark" href="<?php echo esc_url( kcid_page_url( 'admissions' ) ); ?>">Ask about a course <?php echo kcid_icon( 'arrow' ); ?></a><?php endif; ?></div><div class="course-finder__controls"><div class="course-finder__searchbar"><label class="course-search"><span class="screen-reader-text">Search courses</span><span class="course-search__icon"><?php echo kcid_icon( 'search' ); ?></span><input id="course-search" type="search" placeholder="<?php echo esc_attr( $school ? 'Search ' . $school_label . ' courses...' : 'Search courses, skills, or schools...' ); ?>" autocomplete="off" /></label><?php if ( ! $school ) : ?><label class="course-filter"><span class="screen-reader-text">Filter by school</span><span class="course-filter__icon"><?php echo kcid_icon( 'school' ); ?></span><select id="course-school-filter"><option value="">All schools</option><?php foreach ( kcid_schools() as $catalog_school ) : ?><option value="<?php echo esc_attr( strtolower( $catalog_school ) ); ?>"><?php echo esc_html( $catalog_school ); ?></option><?php endforeach; ?></select><span class="course-filter__chevron"><?php echo kcid_icon( 'chevron-down' ); ?></span></label><?php endif; ?></div><div class="course-finder__popular" aria-label="Popular course searches"><span class="course-finder__popular-label">Popular searches:</span><?php foreach ( $popular_searches as $popular_search ) : ?><button type="button" class="course-finder__tag" data-course-search="<?php echo esc_attr( $popular_search ); ?>"><?php echo esc_html( $popular_search ); ?></button><?php endforeach; ?></div></div><p class="course-finder__status" id="course-search-status" aria-live="polite"><?php echo esc_html( count( $programs ) . ' courses' ); ?></p><div class="course-card-grid" id="course-card-grid"><?php foreach ( $programs as $index => $program ) : ?><article class="course-card" data-course-card data-search="<?php echo esc_attr( strtolower( $program['title'] . ' ' . $program['school'] . ' ' . $program['summary'] ) ); ?>" data-school="<?php echo esc_attr( strtolower( $program['school'] ) ); ?>"><div class="course-card__number"><?php echo esc_html( str_pad( (string) ( $index + 1 ), 2, '0', STR_PAD_LEFT ) ); ?></div><div class="course-card__media"><img src="<?php echo esc_url( kcid_asset( 'img/' . $program['image'] ) ); ?>" alt="Students exploring <?php echo esc_attr( $program['title'] ); ?> at KENCID" loading="lazy" /></div><div class="course-card__body"><p class="eyebrow eyebrow--blue"><?php echo esc_html( $program['school'] ); ?></p><h3><?php echo esc_html( $program['title'] ); ?></h3><p><?php echo esc_html( $program['summary'] ); ?></p><div class="course-card__meta"><span><?php echo esc_html( $program['qualification'] ); ?></span><span><?php echo esc_html( $program['duration'] ); ?></span></div><a class="text-link" href="<?php echo esc_url( kcid_course_url( $program['slug'] ) ); ?>">View course details <?php echo kcid_icon( 'arrow' ); ?></a></div></article><?php endforeach; ?></div><p class="course-finder__empty" id="course-search-empty" hidden>No courses match that search yet. Try another keyword or view all courses.</p></div></section>
+			<section class="section-pad course-finder course-finder--results<?php echo $school ? ' course-finder--school' : ''; ?>" aria-labelledby="course-finder-title"><div class="container"><div class="course-card-grid" id="course-card-grid"><?php foreach ( $programs as $index => $program ) : ?><article class="course-card" data-course-card data-search="<?php echo esc_attr( strtolower( $program['title'] . ' ' . $program['school'] . ' ' . $program['summary'] ) ); ?>" data-school="<?php echo esc_attr( strtolower( $program['school'] ) ); ?>"><div class="course-card__number"><?php echo esc_html( str_pad( (string) ( $index + 1 ), 2, '0', STR_PAD_LEFT ) ); ?></div><div class="course-card__media"><img src="<?php echo esc_url( kcid_asset( 'img/' . $program['image'] ) ); ?>" alt="Students exploring <?php echo esc_attr( $program['title'] ); ?> at KENCID" loading="lazy" /></div><div class="course-card__body"><p class="eyebrow eyebrow--blue"><?php echo esc_html( $program['school'] ); ?></p><h3><?php echo esc_html( $program['title'] ); ?></h3><p><?php echo esc_html( $program['summary'] ); ?></p><div class="course-card__meta"><span><?php echo esc_html( $program['qualification'] ); ?></span><span><?php echo esc_html( $program['duration'] ); ?></span></div><a class="text-link" href="<?php echo esc_url( kcid_course_url( $program['slug'] ) ); ?>">View course details <?php echo kcid_icon( 'arrow' ); ?></a></div></article><?php endforeach; ?></div><p class="course-finder__empty" id="course-search-empty" hidden>No courses match that search yet. Try another keyword or view all courses.</p></div></section>
 			<section class="section-pad section-light course-pathway-note"><div class="container course-pathway-note__grid"><div><p class="script-label">Not sure where to begin?</p><h2>Bring us your curiosity.</h2></div><div><p>Our admissions team can help you compare courses, understand entry requirements, and choose a pathway that makes sense for your goals.</p><a class="text-link" href="<?php echo esc_url( kcid_page_url( 'admissions' ) ); ?>">Talk to admissions <?php echo kcid_icon( 'arrow' ); ?></a></div></div></section>
 			<?php
 		endif;

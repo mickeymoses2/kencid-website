@@ -33,6 +33,13 @@ add_action(
 	'wp_enqueue_scripts',
 	function (): void {
 		wp_enqueue_style(
+			'kencid-poppins',
+			'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap',
+			array(),
+			null
+		);
+
+		wp_enqueue_style(
 			'kencid-college',
 			get_theme_file_uri( 'assets/css/theme.css' ),
 			array(),
@@ -49,8 +56,45 @@ add_action(
 	}
 );
 
+add_action(
+	'init',
+	function (): void {
+		remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
+		remove_action( 'wp_print_styles', 'print_emoji_styles' );
+		remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
+		remove_action( 'admin_print_styles', 'print_emoji_styles' );
+		remove_filter( 'the_content_feed', 'wp_staticize_emoji' );
+		remove_filter( 'comment_text_rss', 'wp_staticize_emoji' );
+		remove_filter( 'wp_mail', 'wp_staticize_emoji_for_email' );
+	},
+	1
+);
+
+add_action(
+	'wp_head',
+	function (): void {
+		echo '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>';
+
+		if ( is_front_page() ) {
+			printf(
+				'<link rel="preload" as="image" href="%s" fetchpriority="high">',
+				esc_url( kcid_asset( 'img/hero-interior-design.png' ) )
+			);
+		}
+	},
+	1
+);
+
 function kcid_asset( string $path ): string {
-	return esc_url( get_theme_file_uri( 'assets/' . ltrim( $path, '/' ) ) );
+	$relative_path = ltrim( $path, '/' );
+	$extension     = strtolower( (string) pathinfo( $relative_path, PATHINFO_EXTENSION ) );
+	$webp_path     = preg_replace( '/\.(png|jpe?g)$/i', '.webp', $relative_path );
+
+	if ( in_array( $extension, array( 'png', 'jpg', 'jpeg' ), true ) && is_string( $webp_path ) && file_exists( get_theme_file_path( 'assets/' . $webp_path ) ) ) {
+		$relative_path = $webp_path;
+	}
+
+	return esc_url( get_theme_file_uri( 'assets/' . $relative_path ) );
 }
 
 /**
@@ -192,7 +236,7 @@ function kcid_render_video_embed( string $key, string $title, string $aspect = '
 			<iframe
 				src="<?php echo esc_url( $url ); ?>"
 				title="<?php echo esc_attr( $title ); ?>"
-				loading="<?php echo 'student_life_featured' === $key ? 'eager' : 'lazy'; ?>"
+				loading="lazy"
 				allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
 				referrerpolicy="strict-origin-when-cross-origin"
 				allowfullscreen
@@ -209,13 +253,22 @@ function kcid_render_video_embed( string $key, string $title, string $aspect = '
 }
 
 function kcid_page_url( string $slug ): string {
-	$page = get_page_by_path( trim( $slug, '/' ) );
+	static $url_cache = array();
+	$slug = trim( $slug, '/' );
 
-	if ( $page instanceof WP_Post ) {
-		return esc_url( get_permalink( $page ) );
+	if ( array_key_exists( $slug, $url_cache ) ) {
+		return $url_cache[ $slug ];
 	}
 
-	return esc_url( home_url( '/' . trim( $slug, '/' ) . '/' ) );
+	$page = get_page_by_path( $slug );
+
+	if ( $page instanceof WP_Post ) {
+		$url_cache[ $slug ] = esc_url( get_permalink( $page ) );
+		return $url_cache[ $slug ];
+	}
+
+	$url_cache[ $slug ] = esc_url( home_url( '/' . $slug . '/' ) );
+	return $url_cache[ $slug ];
 }
 
 function kcid_register_course_rewrites(): void {
@@ -492,6 +545,8 @@ function kcid_whatsapp_url( string $message = '' ): string {
 function kcid_icon( string $name ): string {
 	$icons = array(
 		'arrow'      => '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19 19 5M8 5h11v11"/></svg>',
+		'arrow-right' => '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg>',
+		'chat'       => '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8A8.5 8.5 0 0 1 8.7 3.9a8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5Z"/><circle cx="8" cy="12" r=".8"/><circle cx="12" cy="12" r=".8"/><circle cx="16" cy="12" r=".8"/></svg>',
 		'chevron-down' => '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>',
 		'calendar'   => '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18M8 14h.01M12 14h.01M16 14h.01M8 17h.01M12 17h.01M16 17h.01"/></svg>',
 		'phone'      => '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.6a2 2 0 0 1-.4 2.1L8.1 9.7a16 16 0 0 0 6.2 6.2l1.3-1.3a2 2 0 0 1 2.1-.4c.8.3 1.7.6 2.6.7a2 2 0 0 1 1.7 2Z"/></svg>',
@@ -513,20 +568,20 @@ function kcid_icon( string $name ): string {
 	return $icons[ $name ] ?? $icons['arrow'];
 }
 
-function kcid_render_page_header( string $eyebrow, string $title, string $copy, string $image = '', string $title_break_after = '', string $modifier = '' ): void {
+function kcid_render_page_header( string $eyebrow, string $title, string $copy, string $image = '', string $title_break_after = '', string $modifier = '', ?callable $after_title = null ): void {
 	$title_markup = esc_html( $title );
 	$hero_class   = 'page-hero';
 	$hero_style   = '';
 	$hero_crops   = array(
 		'programs'     => 'center 52%',
 		'projects'     => 'center 50%',
-		'admissions'   => '65% 48%',
-		'events'       => '65% 48%',
-		'student-life' => 'center 38%',
-		'about'        => '68% 50%',
-		'our-team'     => '65% 48%',
-		'partners'     => '68% 48%',
-		'contact'      => '65% 48%',
+		'admissions'   => '65% top',
+		'events'       => '65% top',
+		'student-life' => 'center 24%',
+		'about'        => '68% top',
+		'our-team'     => '65% top',
+		'partners'     => '68% top',
+		'contact'      => '65% top',
 	);
 
 	if ( '' !== $image ) {
@@ -556,6 +611,9 @@ function kcid_render_page_header( string $eyebrow, string $title, string $copy, 
 		<div class="container page-hero__inner" style="min-height:clamp(26rem,60vh,42rem);display:flex;flex-direction:column;justify-content:flex-end;padding-top:clamp(3rem,8vh,6rem);padding-bottom:clamp(1.25rem,3vw,2rem)">
 			<p class="eyebrow hero-kicker" style="text-shadow:0 2px 18px rgba(5,8,9,.7)"><?php echo esc_html( $eyebrow ); ?></p>
 			<h1 style="text-shadow:0 2px 22px rgba(5,8,9,.55)"><?php echo $title_markup; ?></h1>
+			<?php if ( null !== $after_title ) : ?>
+				<?php $after_title(); ?>
+			<?php endif; ?>
 		</div>
 	</section>
 	<?php

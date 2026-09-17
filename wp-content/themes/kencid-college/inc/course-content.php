@@ -18,7 +18,13 @@ if ( ! defined( 'ABSPATH' ) ) {
  * name. These are resolved to the current page so old links remain useful.
  */
 function kcid_course_aliases(): array {
-	return array(
+	static $aliases = null;
+
+	if ( null !== $aliases ) {
+		return $aliases;
+	}
+
+	$aliases = array(
 		'landscape-architecture-2'          => 'landscape-architecture',
 		'urban-design-2'                    => 'urban-design',
 		'construction-management-2'         => 'construction-management',
@@ -58,13 +64,21 @@ function kcid_course_aliases(): array {
 		'carpentry-and-joinery-2'            => 'carpentry-and-joinery',
 		'community-health-worker-2'          => 'community-health-worker',
 	);
+
+	return $aliases;
 }
 
 /**
  * Shared admissions information from the old KENCID course page.
  */
 function kcid_course_pathways(): array {
-	return array(
+	static $pathways = null;
+
+	if ( null !== $pathways ) {
+		return $pathways;
+	}
+
+	$pathways = array(
 		array(
 			'label'      => 'Diploma program',
 			'entry'      => 'KCSE C- or an accredited and recognized equivalent',
@@ -84,6 +98,8 @@ function kcid_course_pathways(): array {
 			'credential' => 'Foundation',
 		),
 	);
+
+	return $pathways;
 }
 
 /**

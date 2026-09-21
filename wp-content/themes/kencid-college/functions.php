@@ -34,7 +34,7 @@ add_action(
 	function (): void {
 		wp_enqueue_style(
 			'kencid-poppins',
-			'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap',
+			'https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Poppins:wght@400;500;600;700;800;900&display=swap',
 			array(),
 			null
 		);
@@ -73,6 +73,13 @@ add_action(
 add_action(
 	'wp_head',
 	function (): void {
+		if ( ! has_site_icon() ) {
+			printf(
+				'<link rel="icon" href="%s" type="image/png" sizes="426x426">',
+				esc_url( get_theme_file_uri( 'assets/img/favicon.png' ) )
+			);
+		}
+
 		echo '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>';
 
 		if ( is_front_page() ) {
@@ -343,16 +350,16 @@ function kcid_current_course(): ?array {
 
 function kcid_school_route_path( string $school ): string {
 	$paths = array(
-		'school-of-building-sciences'             => 'schools/school-of-building-science',
+		'school-of-building-sciences'             => 'school-of-building-science',
 		'school-of-design'                        => 'school-of-design',
-		'school-of-media-and-communication'      => 'schools/school-of-media-and-communication',
-		'school-of-information-technology'        => 'schools/school-of-information-technology',
-		'school-of-engineering-automotive-design' => 'schools/school-of-engineering-automotive-design',
-		'school-of-business-management'           => 'schools/school-of-business-management',
-		'school-of-creative-performing-arts'      => 'schools/school-of-creative-performing-arts',
-		'school-of-trades-technology'             => 'schools/school-of-trades-technology',
-		'school-of-hospitality-management'        => 'schools/school-of-hospitality-management',
-		'school-of-health-sciences'                => 'schools/school-of-health-sciences',
+		'school-of-media-and-communication'      => 'school-of-media-and-communication',
+		'school-of-information-technology'        => 'school-of-information-technology',
+		'school-of-engineering-automotive-design' => 'school-of-engineering-automotive-design',
+		'school-of-business-management'           => 'school-of-business-management',
+		'school-of-creative-performing-arts'      => 'school-of-creative-performing-arts',
+		'school-of-trades-technology'             => 'school-of-trades-technology',
+		'school-of-hospitality-management'        => 'school-of-hospitality-management',
+		'school-of-health-sciences'                => 'school-of-health-sciences',
 	);
 	$slug = sanitize_title( $school );
 	return $paths[ $slug ] ?? 'schools/' . $slug;
@@ -553,6 +560,28 @@ function kcid_icon( string $name ): string {
 		'mail'       => '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z"/><path d="m22 6-10 7L2 6"/></svg>',
 		'pin'        => '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>',
 		'cap'        => '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m2 9 10-5 10 5-10 5L2 9Z"/><path d="M6 11v5c3 3 9 3 12 0v-5"/></svg>',
+		'link'       => '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg>',
+		'book-open'  => '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4.5A3.5 3.5 0 0 1 6.5 4H11v16H6.5A3.5 3.5 0 0 0 3 20.5v-16ZM21 4.5A3.5 3.5 0 0 0 17.5 4H13v16h4.5a3.5 3.5 0 0 1 3.5.5v-16Z"/></svg>',
+		'file-text'  => '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h9l4 4v16H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z"/><path d="M14 2v5h5M8 12h7M8 16h7M8 8h2"/></svg>',
+		'folder'     => '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h7l2 2h9v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z"/></svg>',
+		'info'       => '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 11v6M12 7h.01"/></svg>',
+		'clock'      => '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v6l4 2"/></svg>',
+		'dress'      => '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6l-1 4 5 12H5l5-12-1-4Z"/><path d="M9.5 7h5"/></svg>',
+		'pen-tool'   => '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2 4 4-8 8-5 1 1-5 8-8ZM14 4l6 6M15 13l5 5-2 2-5-5"/></svg>',
+		'bulb'       => '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18h6M10 22h4"/><path d="M8.7 15.2A7 7 0 1 1 15.3 15c-.8.6-1.3 1.5-1.3 2.5h-4c0-.9-.5-1.8-1.3-2.3Z"/><path d="M12 5v2M7.8 7.2l1.4 1.4M16.2 7.2l-1.4 1.4"/></svg>',
+		'map'        => '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3V6Z"/><path d="M9 3v15M15 6v15"/></svg>',
+		'facebook'   => '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" stroke="none" d="M14.5 8.5V6.7c0-.8.5-1 1-1H18V2h-3.4C11.1 2 10 4.2 10 6.5v2H7v4h3V22h4.5v-9.5h3.1l.5-4h-3.6Z"/></svg>',
+		'instagram'  => '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor" stroke="none"/></svg>',
+		'linkedin'   => '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" stroke="none" d="M5.3 7.8H2V22h3.3V7.8ZM3.7 2A1.9 1.9 0 1 0 3.7 5.8 1.9 1.9 0 0 0 3.7 2ZM22 13.9c0-4.3-2.3-6.3-5.4-6.3-2.5 0-3.6 1.4-4.2 2.3V7.8H9.1V22h3.3v-7c0-1.9.4-3.7 2.7-3.7 2.3 0 2.3 2.1 2.3 3.8V22H22v-8.1Z"/></svg>',
+		'youtube'    => '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" stroke="none" d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8ZM9.6 15.6V8.4l6.2 3.6-6.2 3.6Z"/></svg>',
+		'newspaper'  => '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h14a2 2 0 0 1 2 2v14H6a2 2 0 0 1-2-2V4Z"/><path d="M4 18a2 2 0 0 0 2 2h14V6a2 2 0 0 0-2-2M8 8h8M8 12h8M8 16h5"/></svg>',
+		'school'     => '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 9.5 12 3l9.5 6.5v1.75h-19V9.5Z"/><path d="M5 11.25V21h14v-9.75M8 21v-5h8v5M8 13.5h.01M12 13.5h.01M16 13.5h.01"/><path d="M12 3V1.5h2.5"/></svg>',
+		'building'   => '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21V5l8-3v19M12 21h8V9l-8-4"/><path d="M7 8h2M7 12h2M7 16h2M15 12h2M15 16h2M15 20h2"/></svg>',
+		'sofa'       => '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 11V8a3 3 0 0 1 3-3h8a3 3 0 0 1 3 3v3M4 17v-4a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3v4M4 17h16M6 17v3M18 17v3"/></svg>',
+		'media'      => '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m10 9 5 3-5 3V9Z"/></svg>',
+		'monitor'    => '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg>',
+		'palette'    => '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 0 0 0 18h1.5a2 2 0 0 0 0-4H12a2 2 0 0 1 0-4h2.5A6.5 6.5 0 0 0 21 6.5 9 9 0 0 0 12 3Z"/><circle cx="7.5" cy="10" r=".8"/><circle cx="10" cy="7" r=".8"/><circle cx="14" cy="7" r=".8"/></svg>',
+		'heart'      => '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 8.8c0 5.4-8.8 11-8.8 11s-8.8-5.6-8.8-11A4.8 4.8 0 0 1 12 6.4a4.8 4.8 0 0 1 8.8 2.4Z"/></svg>',
 		'user'       => '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>',
 		'tools'      => '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14.7 6.3 3-3 3 3-3 3"/><path d="m3 21 8.5-8.5"/><path d="m9 5 10 10"/><path d="m5 9 10 10"/></svg>',
 		'briefcase'  => '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12h18"/></svg>',

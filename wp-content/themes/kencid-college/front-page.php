@@ -6,7 +6,7 @@
  */
 
 get_header();
-$schools = array_slice( kcid_schools(), 0, 8 );
+$schools = kcid_schools();
 $school_images = array(
 	'School of Building Sciences'              => 'kencid-source/school-building-sciences.jpg',
 	'School of Design'                         => 'kencid-source/school-design.jpg',
@@ -16,6 +16,20 @@ $school_images = array(
 	'School of Business Management'            => 'kencid-source/school-business.webp',
 	'School of Creative & Performing Arts'     => 'kencid-source/school-creative-performing-arts.jpg',
 	'School of Health Sciences'                 => 'kencid-source/school-health-sciences.webp',
+	'School of Hospitality Management'          => 'kencid-source/school-hospitality-management.jpg',
+	'School of Trades & Technology'             => 'courses-raster/welding-and-fabrication.webp',
+);
+$school_card_content = array(
+	'School of Building Sciences'               => array( 'description' => 'Design and build a better tomorrow.', 'icon' => 'building' ),
+	'School of Design'                          => array( 'description' => 'Create inspiring spaces for real life.', 'icon' => 'sofa' ),
+	'School of Media and Communication'         => array( 'description' => 'Find your voice. Shape the story.', 'icon' => 'media' ),
+	'School of Information Technology'         => array( 'description' => 'Gain the digital skills for what’s next.', 'icon' => 'monitor' ),
+	'School of Engineering & Automotive Design' => array( 'description' => 'Turn ideas into real-world solutions.', 'icon' => 'tools' ),
+	'School of Business Management'             => array( 'description' => 'Build leadership for a changing world.', 'icon' => 'briefcase' ),
+	'School of Creative & Performing Arts'      => array( 'description' => 'Nurture your talent. Make an impact.', 'icon' => 'palette' ),
+	'School of Health Sciences'                 => array( 'description' => 'Care. Innovate. Transform lives.', 'icon' => 'heart' ),
+	'School of Hospitality Management'          => array( 'description' => 'Create memorable experiences for every guest.', 'icon' => 'sofa' ),
+	'School of Trades & Technology'             => array( 'description' => 'Build practical skills for the world of work.', 'icon' => 'tools' ),
 );
 $next_intake = kcid_next_intake();
 $countdown_remaining = max( 0, $next_intake['timestamp'] - time() );
@@ -33,8 +47,8 @@ $industry_partners = array(
 	array( 'name' => 'KENCID Interiors', 'logo' => 'partner-kencid-interiors.png' ),
 	array( 'name' => 'The African Institute of the Interior Design Professions', 'logo' => 'partner-iid.png' ),
 	array( 'name' => 'Victoria Courts', 'logo' => 'partner-victoria-courts.png' ),
-	array( 'name' => 'Interior Designers Association of Kenya', 'logo' => 'partner-idak.png' ),
-	array( 'name' => 'Africa Interior Design Week', 'logo' => 'partner-dw.png' ),
+	array( 'name' => 'Interior Designers Association of Kenya', 'logo' => 'partner-idak-cropped.png' ),
+	array( 'name' => 'Design Week Africa', 'logo' => 'partner-design-week-africa.png' ),
 );
 $hero_slides = array(
 	array(
@@ -142,10 +156,9 @@ $blog_posts = array(
 				<img src="<?php echo esc_url( kcid_asset( 'img/about-students.png' ) ); ?>" alt="KENCID students wearing the college colours together" loading="lazy" decoding="async" width="1254" height="1254" />
 			</div>
 			<div class="about-section__content">
-				<p class="script-label">Who we are</p>
-				<h2 id="about-section-title">The Comprehensive College of Design</h2>
+				<h2 id="about-section-title"><span class="about-section__heading-lead">The Comprehensive College of</span> <span class="about-section__heading-tail">Design</span></h2>
 				<p class="section-copy">At KENCID, we believe that every great design begins with a single step, and that step starts with you. Whether you dream of crafting breathtaking interiors, designing awe-inspiring architecture, or shaping captivating landscapes, our college is the perfect place to begin your journey.</p>
-				<a class="button button--primary" href="<?php echo kcid_page_url( 'programs' ); ?>">Our Programs <?php echo kcid_icon( 'arrow' ); ?></a>
+				<a class="about-section__cta" href="<?php echo kcid_page_url( 'programs' ); ?>">Explore Programs <span class="about-section__cta-icon" aria-hidden="true"><?php echo kcid_icon( 'arrow-right' ); ?></span></a>
 			</div>
 		</div>
 	</section>
@@ -153,13 +166,8 @@ $blog_posts = array(
 	<section id="intake-section" class="intake-section" aria-labelledby="intake-section-title">
 		<div class="design-wide intake-section__inner">
 			<div class="intake-section__content">
-				<p class="intake-kicker">
-					<span class="intake-kicker__icon" aria-hidden="true"><?php echo kcid_icon( 'calendar' ); ?></span>
-					<span>New Intake</span>
-				</p>
-				<h2 id="intake-section-title"><span data-intake-headline><?php echo esc_html( $next_intake['name'] . ' Intake' ); ?></span><strong>Ongoing</strong></h2>
-				<div class="intake-section__accent" aria-hidden="true"></div>
-				<p class="intake-section__copy">Applications are open for the <?php echo esc_html( $next_intake['name'] ); ?> intake. Take the first step towards a creative and successful future.</p>
+				<h2 id="intake-section-title"><span data-intake-headline><?php echo esc_html( $next_intake['name'] . ' Intake' ); ?></span> <strong>Ongoing</strong></h2>
+				<p class="intake-section__copy">Applications are open for the <?php echo esc_html( $next_intake['name'] ); ?> intake. Take the first step towards<br />a creative and successful future.</p>
 				<p class="intake-date-pill">
 					<span class="intake-date-pill__icon" aria-hidden="true"><?php echo kcid_icon( 'cap' ); ?></span>
 					<span>Starts</span>
@@ -186,7 +194,7 @@ $blog_posts = array(
 				</div>
 
 				<div class="intake-actions">
-					<a class="button button--intake" href="<?php echo kcid_page_url( 'apply-now' ); ?>">Apply Now <?php echo kcid_icon( 'arrow-right' ); ?></a>
+					<a class="button button--intake" href="<?php echo kcid_page_url( 'apply-now' ); ?>">Apply Now <span class="intake-section__cta-icon" aria-hidden="true"><?php echo kcid_icon( 'arrow-right' ); ?></span></a>
 				</div>
 			</div>
 
@@ -205,8 +213,9 @@ $blog_posts = array(
 
 	<section class="schools-section" aria-labelledby="schools-section-title">
 		<div class="design-wide">
-			<h2 id="schools-section-title">Our Schools</h2>
-			<p class="schools-section__description">At KENCID, we believe that every great design begins with a single step, and that step starts with you. Whether you dream of crafting breathtaking interiors, designing awe-inspiring architecture, or shaping captivating landscapes, our college is the perfect place to begin your journey.</p>
+			<span class="schools-section__icon" aria-hidden="true"><?php echo kcid_icon( 'cap' ); ?></span>
+			<h2 id="schools-section-title">Our <span>Schools</span></h2>
+			<p class="schools-section__description">At KENCID, we bring together creativity, technology and practical learning across diverse schools so you can build the skills, confidence and opportunities for a successful future.</p>
 			<form class="schools-search" role="search" aria-label="Search schools">
 				<label class="screen-reader-text" for="school-search">Search schools</label>
 				<svg class="schools-search__icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m16 16 5 5"></path></svg>
@@ -216,11 +225,13 @@ $blog_posts = array(
 			<p class="schools-search__status" id="school-search-status" role="status" aria-live="polite"></p>
 			<div class="schools-section__grid">
 				<?php foreach ( $schools as $index => $school ) : ?>
-					<a class="school-card" href="<?php echo esc_url( add_query_arg( 'school', sanitize_title( $school ), kcid_page_url( 'programs' ) ) ); ?>" aria-label="Explore <?php echo esc_attr( $school ); ?>">
+					<a class="school-card" href="<?php echo esc_url( kcid_school_url( $school ) ); ?>" aria-label="Explore <?php echo esc_attr( $school ); ?>">
 						<span class="school-card__image" aria-hidden="true">
 							<img src="<?php echo esc_url( kcid_asset( 'img/' . ( $school_images[ $school ] ?? 'kencid-source/school-building-sciences.jpg' ) ) ); ?>" alt="" loading="lazy" decoding="async" width="218" height="265" />
-							<span class="school-card__index"><?php echo esc_html( str_pad( (string) ( $index + 1 ), 2, '0', STR_PAD_LEFT ) ); ?></span>
-							<span class="school-card__title"><?php echo esc_html( $school ); ?></span>
+							<span class="school-card__content">
+								<span class="school-card__title"><?php echo esc_html( $school ); ?></span>
+							</span>
+							<span class="school-card__arrow"><?php echo kcid_icon( 'arrow-right' ); ?></span>
 						</span>
 					</a>
 				<?php endforeach; ?>
@@ -231,10 +242,9 @@ $blog_posts = array(
 	<section class="why-choose-us" aria-labelledby="why-choose-us-title">
 		<div class="design-wide why-choose-us__grid">
 			<div class="why-choose-us__content">
-				<p class="script-label">Why Choose us</p>
-				<h2 id="why-choose-us-title">Take the next step toward your personal and professional goals</h2>
+				<h2 id="why-choose-us-title"><span class="why-choose-us__heading-lead">Take the next step toward</span> <span class="why-choose-us__heading-tail">your personal and professional goals</span></h2>
 				<p class="section-copy">We prioritize hands-on learning experiences to ensure students gain practical skills and industry knowledge. Our commitment to excellence fosters a supportive environment where students can thrive and pursue their passions with confidence.</p>
-				<a class="button button--primary" href="<?php echo kcid_page_url( 'apply-now' ); ?>">Apply Now <?php echo kcid_icon( 'arrow' ); ?></a>
+				<a class="why-choose-us__cta" href="<?php echo kcid_page_url( 'apply-now' ); ?>">Apply Now <span class="why-choose-us__cta-icon" aria-hidden="true"><?php echo kcid_icon( 'arrow-right' ); ?></span></a>
 			</div>
 			<div class="why-choose-us__media">
 				<img src="<?php echo esc_url( kcid_asset( 'img/why-students.png' ) ); ?>" alt="KENCID students and staff celebrating together" loading="lazy" decoding="async" width="1254" height="1254" />
@@ -271,11 +281,10 @@ $blog_posts = array(
 	<section class="blog-section" aria-labelledby="blog-section-title">
 		<div class="design-wide">
 			<div class="blog-section__header">
+				<span class="blog-section__icon" aria-hidden="true"><?php echo kcid_icon( 'newspaper' ); ?></span>
 				<div>
-					<p class="script-label">From the journal</p>
 					<h2 id="blog-section-title">Blog &amp; Updates</h2>
 				</div>
-				<a class="button button--primary" href="https://kencid.ac.ke/blog-updates/">View all updates <?php echo kcid_icon( 'arrow' ); ?></a>
 			</div>
 			<div class="blog-card-grid">
 				<?php foreach ( $blog_posts as $post ) : ?>
@@ -288,6 +297,9 @@ $blog_posts = array(
 						</div>
 					</article>
 				<?php endforeach; ?>
+			</div>
+			<div class="blog-section__cta">
+				<a class="button button--primary" href="https://kencid.ac.ke/blog-updates/">View all updates <?php echo kcid_icon( 'arrow' ); ?></a>
 			</div>
 		</div>
 	</section>

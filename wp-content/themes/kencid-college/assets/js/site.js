@@ -183,6 +183,40 @@
     true
   );
 
+  const revealTargets = [
+    { selector: '.about-section', className: 'about-section--reveal-ready' },
+    { selector: '.intake-section', className: 'intake-section--reveal-ready' },
+    { selector: '.schools-section', className: 'schools-section--reveal-ready' },
+  ];
+
+  revealTargets.forEach(({ selector, className }) => {
+    const section = document.querySelector(selector);
+
+    if (!section) return;
+
+    let revealObserver;
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const revealSection = () => {
+      section.classList.add('is-revealed');
+      revealObserver?.disconnect();
+    };
+
+    if (!reducedMotion && 'IntersectionObserver' in window) {
+      section.classList.add(className);
+      revealObserver = new IntersectionObserver(
+        (entries) => {
+          if (entries.some((entry) => entry.isIntersecting)) {
+            revealSection();
+          }
+        },
+        { threshold: 0.2, rootMargin: '0px 0px -8% 0px' },
+      );
+      revealObserver.observe(section);
+    } else {
+      revealSection();
+    }
+  });
+
   const heroSlider = document.querySelector('[data-hero-slider]');
 
   if (heroSlider) {

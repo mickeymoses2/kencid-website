@@ -489,8 +489,8 @@ $next_intake = kcid_next_intake();
 			array( 'name' => 'KENCID Interiors', 'logo' => 'partner-kencid-interiors.png' ),
 			array( 'name' => 'The African Institute of the Interior Design Professions', 'logo' => 'partner-iid.png' ),
 			array( 'name' => 'Victoria Courts', 'logo' => 'partner-victoria-courts.png' ),
-			array( 'name' => 'Interior Designers Association of Kenya', 'logo' => 'partner-idak.png' ),
-			array( 'name' => 'Africa Interior Design Week', 'logo' => 'partner-dw.png' ),
+			array( 'name' => 'Interior Designers Association of Kenya', 'logo' => 'partner-idak-cropped.png' ),
+			array( 'name' => 'Design Week Africa', 'logo' => 'partner-design-week-africa.png' ),
 		);
 		kcid_render_page_header( 'Partners', 'Our creative partners.', 'Our academic and industry relationships help keep KCID learning credible, current, and connected to the creative economy.', 'hero-construction-management-v2.png', '', 'partners' );
 		?>

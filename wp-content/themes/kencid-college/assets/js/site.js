@@ -186,7 +186,7 @@
   const revealTargets = [
     { selector: '.about-section', className: 'about-section--reveal-ready' },
     { selector: '.intake-section', className: 'intake-section--reveal-ready' },
-    { selector: '.schools-section', className: 'schools-section--reveal-ready' },
+    { selector: '.prefooter-cta', className: 'prefooter-cta--reveal-ready' },
   ];
 
   revealTargets.forEach(({ selector, className }) => {

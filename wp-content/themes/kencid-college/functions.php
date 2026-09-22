@@ -43,14 +43,14 @@ add_action(
 			'kencid-college',
 			get_theme_file_uri( 'assets/css/theme.css' ),
 			array(),
-			wp_get_theme()->get( 'Version' )
+			filemtime( get_theme_file_path( 'assets/css/theme.css' ) )
 		);
 
 		wp_enqueue_script(
 			'kencid-college',
 			get_theme_file_uri( 'assets/js/site.js' ),
 			array(),
-			wp_get_theme()->get( 'Version' ),
+			filemtime( get_theme_file_path( 'assets/js/site.js' ) ),
 			true
 		);
 	}
@@ -553,6 +553,7 @@ function kcid_icon( string $name ): string {
 	$icons = array(
 		'arrow'      => '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19 19 5M8 5h11v11"/></svg>',
 		'arrow-right' => '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg>',
+		'search'     => '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg>',
 		'chat'       => '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8A8.5 8.5 0 0 1 8.7 3.9a8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5Z"/><circle cx="8" cy="12" r=".8"/><circle cx="12" cy="12" r=".8"/><circle cx="16" cy="12" r=".8"/></svg>',
 		'chevron-down' => '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>',
 		'calendar'   => '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18M8 14h.01M12 14h.01M16 14h.01M8 17h.01M12 17h.01M16 17h.01"/></svg>',
@@ -610,6 +611,7 @@ function kcid_render_page_header( string $eyebrow, string $title, string $copy, 
 		'about'        => '68% top',
 		'our-team'     => '65% top',
 		'partners'     => '68% top',
+		'school-programs' => 'center 52%',
 		'contact'      => '65% top',
 	);
 
@@ -632,13 +634,29 @@ function kcid_render_page_header( string $eyebrow, string $title, string $copy, 
 		}
 	}
 
+	if ( 'school-programs' === $modifier ) {
+		$hero_class .= ' page-hero--programs';
+		$school_title = preg_replace( '/^School of\s+/i', '', $title );
+		if ( is_string( $school_title ) && $school_title !== $title ) {
+			$school_title       = str_ireplace( ' and ', ' & ', $school_title );
+			$school_title_words = preg_split( '/\s+/', trim( $school_title ) );
+			$school_title_last  = array_pop( $school_title_words );
+			$school_title_prefix = str_replace( '&amp;', '<span class="page-hero__title-ampersand">&amp;</span>', esc_html( implode( ' ', $school_title_words ) ) );
+			$title_markup        = '<span class="page-hero__title-accent">' . $school_title_prefix . '<span class="page-hero__title-last-word">' . esc_html( (string) $school_title_last ) . '</span></span>';
+		}
+	}
+
 	if ( '' !== $modifier ) {
 		$hero_class .= ' page-hero--' . sanitize_title( $modifier );
 	}
 	?>
 	<section class="<?php echo esc_attr( $hero_class ); ?>"<?php echo '' !== $hero_style ? ' style="' . esc_attr( $hero_style ) . '"' : ''; ?>>
 		<div class="container page-hero__inner" style="min-height:clamp(26rem,60vh,42rem);display:flex;flex-direction:column;justify-content:flex-end;padding-top:clamp(3rem,8vh,6rem);padding-bottom:clamp(1.25rem,3vw,2rem)">
-			<p class="eyebrow hero-kicker" style="text-shadow:0 2px 18px rgba(5,8,9,.7)"><?php echo esc_html( $eyebrow ); ?></p>
+			<?php if ( in_array( $modifier, array( 'our-team', 'partners', 'about', 'student-life', 'projects', 'events', 'contact', 'school-programs', 'programs' ), true ) ) : ?>
+				<span class="page-hero__icon" aria-hidden="true"><?php echo kcid_icon( 'our-team' === $modifier ? 'community' : ( 'student-life' === $modifier ? 'user' : ( 'partners' === $modifier ? 'link' : ( 'projects' === $modifier ? 'briefcase' : ( 'events' === $modifier ? 'calendar' : ( 'contact' === $modifier ? 'phone' : 'school' ) ) ) ) ) ); ?></span>
+			<?php else : ?>
+				<p class="eyebrow hero-kicker" style="text-shadow:0 2px 18px rgba(5,8,9,.7)"><?php echo esc_html( $eyebrow ); ?></p>
+			<?php endif; ?>
 			<h1 style="text-shadow:0 2px 22px rgba(5,8,9,.55)"><?php echo $title_markup; ?></h1>
 			<?php if ( null !== $after_title ) : ?>
 				<?php $after_title(); ?>

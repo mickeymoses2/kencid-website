@@ -110,25 +110,13 @@ $next_intake = kcid_next_intake();
 			$popular_searches = $school ? array_slice( $school['courses'], 0, 5 ) : array( 'Business Management', 'Accounting', 'Marketing', 'Entrepreneurship', 'Human Resource Management' );
 			$course_explorer = static function () use ( $school, $school_label, $popular_searches, $programs ): void {
 				?>
-				<div class="course-hero-explorer">
-					<div class="section-heading-row course-hero-explorer__heading">
-						<div>
-							<p class="eyebrow eyebrow--blue"><?php echo $school ? 'School course explorer' : 'Course explorer'; ?></p>
-							<h2 id="course-finder-title"><?php echo $school ? 'Explore ' . esc_html( $school_label ) . '.' : 'Find the course that fits.'; ?></h2>
-							<?php if ( $school ) : ?><p class="course-finder__school-intro"><?php echo esc_html( $school['intro'] ); ?></p><?php endif; ?>
-						</div>
-						<?php if ( $school ) : ?>
-							<a class="button button--dark" href="<?php echo esc_url( kcid_page_url( 'programs' ) ); ?>">View all schools <?php echo kcid_icon( 'arrow' ); ?></a>
-						<?php else : ?>
-							<a class="button button--dark" href="<?php echo esc_url( kcid_page_url( 'admissions' ) ); ?>">Ask about a course <?php echo kcid_icon( 'arrow' ); ?></a>
-						<?php endif; ?>
-					</div>
+				<div class="course-hero-explorer<?php echo $school ? ' course-hero-explorer--school' : ''; ?>">
 					<div class="course-finder__controls">
 						<div class="course-finder__searchbar">
 							<label class="course-search">
 								<span class="screen-reader-text">Search courses</span>
 								<span class="course-search__icon"><?php echo kcid_icon( 'search' ); ?></span>
-								<input id="course-search" type="search" placeholder="<?php echo esc_attr( $school ? 'Search ' . $school_label . ' courses...' : 'Search courses, skills, or schools...' ); ?>" autocomplete="off" />
+								<input id="course-search" type="search" placeholder="<?php echo esc_attr( $school ? 'Search courses...' : 'Search courses, skills, or schools...' ); ?>" autocomplete="off" />
 							</label>
 							<?php if ( ! $school ) : ?>
 								<label class="course-filter">
@@ -144,42 +132,44 @@ $next_intake = kcid_next_intake();
 								</label>
 							<?php endif; ?>
 						</div>
+						<?php if ( $school ) : ?>
+							<a class="button button--dark" href="<?php echo esc_url( kcid_page_url( 'programs' ) ); ?>">View all courses <?php echo kcid_icon( 'arrow-right' ); ?></a>
+						<?php else : ?>
 						<div class="course-finder__popular" aria-label="Popular course searches">
-							<span class="course-finder__popular-label">Popular searches:</span>
+							<span class="course-finder__popular-label">Popular:</span>
 							<?php foreach ( $popular_searches as $popular_search ) : ?>
 								<button type="button" class="course-finder__tag" data-course-search="<?php echo esc_attr( $popular_search ); ?>"><?php echo esc_html( $popular_search ); ?></button>
 							<?php endforeach; ?>
 						</div>
+						<?php endif; ?>
 					</div>
-					<p class="course-finder__status" id="course-search-status" aria-live="polite"><?php echo esc_html( count( $programs ) . ' courses' ); ?></p>
+					<p class="course-finder__status" id="course-search-status" aria-live="polite"><?php echo esc_html( count( $programs ) . ' ' . ( 1 === count( $programs ) ? 'course' : 'courses' ) . ( $school ? ' available' : '' ) ); ?></p>
 				</div>
 				<?php
 			};
 			kcid_render_page_header(
 				$school ? 'School of ' . $school_label : 'Programs & courses',
-				$school ? 'Courses in ' . $school_label . '.' : '',
+				$school ? 'School of ' . $school_label : 'Course explorer',
 				$school ? $school['intro'] : 'Explore the current KENCID course catalog across ten schools. Search by course or filter by school to find your next step.',
 				$school ? $school['image'] : 'course-listing-hero.png',
 				'',
-				'programs',
+				$school ? 'school-programs' : 'programs',
 				$course_explorer
 			);
 			?>
-			<section class="section-pad course-finder course-finder--results<?php echo $school ? ' course-finder--school' : ''; ?>" aria-labelledby="course-finder-title"><div class="container"><div class="course-card-grid" id="course-card-grid"><?php foreach ( $programs as $index => $program ) : ?><article class="course-card" data-course-card data-search="<?php echo esc_attr( strtolower( $program['title'] . ' ' . $program['school'] . ' ' . $program['summary'] ) ); ?>" data-school="<?php echo esc_attr( strtolower( $program['school'] ) ); ?>"><div class="course-card__number"><?php echo esc_html( str_pad( (string) ( $index + 1 ), 2, '0', STR_PAD_LEFT ) ); ?></div><div class="course-card__media"><img src="<?php echo esc_url( kcid_asset( 'img/' . $program['image'] ) ); ?>" alt="Students exploring <?php echo esc_attr( $program['title'] ); ?> at KENCID" loading="lazy" /></div><div class="course-card__body"><p class="eyebrow eyebrow--blue"><?php echo esc_html( $program['school'] ); ?></p><h3><?php echo esc_html( $program['title'] ); ?></h3><p><?php echo esc_html( $program['summary'] ); ?></p><div class="course-card__meta"><span><?php echo esc_html( $program['qualification'] ); ?></span><span><?php echo esc_html( $program['duration'] ); ?></span></div><a class="text-link" href="<?php echo esc_url( kcid_course_url( $program['slug'] ) ); ?>">View course details <?php echo kcid_icon( 'arrow' ); ?></a></div></article><?php endforeach; ?></div><p class="course-finder__empty" id="course-search-empty" hidden>No courses match that search yet. Try another keyword or view all courses.</p></div></section>
-			<section class="section-pad section-light course-pathway-note"><div class="container course-pathway-note__grid"><div><p class="script-label">Not sure where to begin?</p><h2>Bring us your curiosity.</h2></div><div><p>Our admissions team can help you compare courses, understand entry requirements, and choose a pathway that makes sense for your goals.</p><a class="text-link" href="<?php echo esc_url( kcid_page_url( 'admissions' ) ); ?>">Talk to admissions <?php echo kcid_icon( 'arrow' ); ?></a></div></div></section>
+			<section class="section-pad course-finder course-finder--results<?php echo $school ? ' course-finder--school' : ''; ?>" <?php echo $school ? 'aria-label="' . esc_attr( $school_label . ' courses' ) . '"' : 'aria-label="Course results"'; ?>><div class="container"><div class="course-card-grid" id="course-card-grid"><?php foreach ( $programs as $index => $program ) : ?><article class="course-card" data-course-card data-search="<?php echo esc_attr( strtolower( $program['title'] . ' ' . $program['school'] . ' ' . $program['summary'] ) ); ?>" data-school="<?php echo esc_attr( strtolower( $program['school'] ) ); ?>"><div class="course-card__number"><?php echo esc_html( str_pad( (string) ( $index + 1 ), 2, '0', STR_PAD_LEFT ) ); ?></div><div class="course-card__media"><img src="<?php echo esc_url( kcid_asset( 'img/' . $program['image'] ) ); ?>" alt="Students exploring <?php echo esc_attr( $program['title'] ); ?> at KENCID" loading="lazy" /></div><div class="course-card__body"><p class="eyebrow eyebrow--blue"><?php echo esc_html( $program['school'] ); ?></p><h3><?php echo esc_html( $program['title'] ); ?></h3><p><?php echo esc_html( $program['summary'] ); ?></p><div class="course-card__meta"><span><?php echo esc_html( $program['qualification'] ); ?></span><span><?php echo esc_html( $program['duration'] ); ?></span></div><a class="text-link" href="<?php echo esc_url( kcid_course_url( $program['slug'] ) ); ?>">View course details <?php echo kcid_icon( 'arrow' ); ?></a></div></article><?php endforeach; ?></div><p class="course-finder__empty" id="course-search-empty" hidden>No courses match that search yet. Try another keyword or view all courses.</p></div></section>
 			<?php
 		endif;
 		break;
 
 	case 'projects':
 		$projects = kcid_projects();
-			kcid_render_page_header( 'KENCID projects', 'See how ideas take shape.', 'Explore selected student projects across interiors, architecture, fashion, media, and the built environment. Open a project to browse the full story.', 'student-work-strip.png', '', 'projects' );
+			kcid_render_page_header( 'KENCID projects', 'KENCID Projects', 'Explore selected student projects across interiors, architecture, fashion, media, and the built environment. Open a project to browse the full story.', 'student-work-strip.png', '', 'projects' );
 		?>
 		<section class="section-pad projects-section" aria-labelledby="projects-title">
 			<div class="container">
 				<div class="projects-section__intro">
 					<div>
-						<p class="script-label">Selected work</p>
 						<h2 id="projects-title">Made to be experienced.</h2>
 					</div>
 					<p>Every project starts with a question, then grows through research, making, critique, and a point of view worth sharing.</p>
@@ -234,7 +224,7 @@ $next_intake = kcid_next_intake();
 		kcid_render_page_header( 'Admissions', 'Start your creative journey.', 'Applications are open for diploma, certificate, and foundation study. Get course guidance, fee information, and help choosing the right pathway.', 'hero-interior-design-v2.png', '', 'admissions' );
 		?>
 		<section class="section-pad admissions-overview"><div class="container"><div class="intake-banner"><div><p class="eyebrow">Now accepting applications</p><h2>Make your next move in <?php echo esc_html( $next_intake['label'] ); ?>.</h2><p>Talk to admissions about full-time and evening options, course fit, and the documents you need to get started.</p></div><a class="button button--dark" href="tel:+254797888111">Call admissions <?php echo kcid_icon( 'phone' ); ?></a></div><div class="pathway-grid" aria-label="Study pathways"><article class="pathway-card pathway-card--yellow"><span class="pathway-card__number">01</span><h2>Diploma</h2><p>For learners ready to build a strong professional foundation.</p><strong>KCSE C-</strong><span>6 semesters</span></article><article class="pathway-card pathway-card--blue"><span class="pathway-card__number">02</span><h2>Certificate</h2><p>A focused route into practical creative and technical study.</p><strong>KCSE D- and above</strong><span>3 semesters</span></article><article class="pathway-card pathway-card--pink"><span class="pathway-card__number">03</span><h2>Foundation</h2><p>Start your design journey and build confidence through making.</p><strong>KCSE: any grade</strong><span>2 semesters</span></article></div></div></section>
-		<section class="section-pad section-light"><div class="container admissions-grid admissions-grid--refreshed"><div class="admissions-copy"><p class="script-label">Ready when you are</p><h2>Bring your questions. Leave with a plan.</h2><p>Our admissions team can help you understand course options, entry requirements, fees, flexible study programs, financial aid, and scholarships for outstanding students.</p><div class="admissions-checks"><span><?php echo kcid_icon( 'cap' ); ?>Course guidance</span><span><?php echo kcid_icon( 'calendar' ); ?>Flexible study options</span><span><?php echo kcid_icon( 'shield' ); ?>Accredited programs</span></div></div><form class="admissions-form" aria-label="Application interest form"><h2>Application interest</h2><p>Share a few details and continue the conversation on WhatsApp.</p><label for="applicant-name">Full name<input id="applicant-name" type="text" name="name" autocomplete="name" required></label><label for="applicant-phone">Phone number<input id="applicant-phone" type="tel" name="phone" autocomplete="tel" required></label><label for="applicant-program">Program of interest<select id="applicant-program" name="program"><?php foreach ( kcid_catalog_programs() as $program ) : ?><option><?php echo esc_html( $program['title'] ); ?></option><?php endforeach; ?></select></label><a class="button button--dark" href="<?php echo esc_url( kcid_whatsapp_url( 'Hi KENCID, I would like to learn more about applying.' ) ); ?>" target="_blank" rel="noopener noreferrer">Continue on WhatsApp <?php echo kcid_icon( 'arrow' ); ?></a></form></div></section>
+		<section class="section-pad section-light"><div class="container admissions-grid admissions-grid--refreshed"><div class="admissions-copy"><h2>Bring your questions. Leave with a plan.</h2><p>Our admissions team can help you understand course options, entry requirements, fees, flexible study programs, financial aid, and scholarships for outstanding students.</p><div class="admissions-checks"><span><?php echo kcid_icon( 'cap' ); ?>Course guidance</span><span><?php echo kcid_icon( 'calendar' ); ?>Flexible study options</span><span><?php echo kcid_icon( 'shield' ); ?>Accredited programs</span></div></div><form class="admissions-form" aria-label="Application interest form"><h2>Application interest</h2><p>Share a few details and continue the conversation on WhatsApp.</p><label for="applicant-name">Full name<input id="applicant-name" type="text" name="name" autocomplete="name" required></label><label for="applicant-phone">Phone number<input id="applicant-phone" type="tel" name="phone" autocomplete="tel" required></label><label for="applicant-program">Program of interest<select id="applicant-program" name="program"><?php foreach ( kcid_catalog_programs() as $program ) : ?><option><?php echo esc_html( $program['title'] ); ?></option><?php endforeach; ?></select></label><a class="button button--dark" href="<?php echo esc_url( kcid_whatsapp_url( 'Hi KENCID, I would like to learn more about applying.' ) ); ?>" target="_blank" rel="noopener noreferrer">Continue on WhatsApp <?php echo kcid_icon( 'arrow' ); ?></a></form></div></section>
 		<?php
 		break;
 
@@ -327,7 +317,7 @@ $next_intake = kcid_next_intake();
 		$events = kcid_events();
 		$featured_event = $events[0];
 		$event_categories = array_values( array_unique( array_map( function ( $event ) { return $event['category']; }, $events ) ) );
-		kcid_render_page_header( 'KENCID events', 'Make room for what’s next.', 'Workshops, showcases, talks, and campus moments for curious minds. Find your next reason to show up, connect, and make something happen.', 'hero-media-studio-v2.png', 'what’s next.', 'events' );
+		kcid_render_page_header( 'KENCID events', 'KENCID Events', 'Workshops, showcases, talks, and campus moments for curious minds. Find your next reason to show up, connect, and make something happen.', 'hero-media-studio-v2.png', '', 'events' );
 		?>
 		<section class="section-pad events-featured" aria-labelledby="featured-event-title">
 			<div class="container">
@@ -456,27 +446,62 @@ $next_intake = kcid_next_intake();
 		break;
 
 	case 'student-life':
-		kcid_render_page_header( 'Student life', 'Find your creative community.', 'Find the support, spaces, and shared experiences that help you focus, collaborate, and grow at KENCID.', 'about-students.png', 'creative', 'student-life' );
+		kcid_render_page_header( 'Student life', 'Student Life', 'Find the support, spaces, and shared experiences that help you focus, collaborate, and grow at KENCID.', 'about-students.png', 'creative', 'student-life' );
 		?>
-		<section class="section-pad student-life-video-section" aria-labelledby="student-life-video-title"><div class="container"><div class="student-life-video-section__intro"><p class="script-label">See campus life</p><h2 id="student-life-video-title">Watch KENCID in motion.</h2><p>Get a feel for the people, creative energy, and everyday moments that make student life here distinctive.</p></div><div class="student-life-video-grid"><article class="video-card video-card--featured"><div class="video-card__frame"><?php kcid_render_video_embed( 'student_life_featured', 'KENCID student life featured video', 'landscape' ); ?></div><div class="video-card__body"><p class="eyebrow">Featured video</p><h3>A closer look at life on campus.</h3><p>Share a longer story about learning, making, and belonging at KENCID.</p></div></article></div></div></section>
+		<section class="section-pad student-life-video-section" aria-labelledby="student-life-video-title"><div class="container"><div class="student-life-video-section__intro"><p class="script-label">See campus life</p><h2 id="student-life-video-title">Watch KENCID in motion.</h2><p>Get a feel for the people, creative energy, and everyday moments that make student life here distinctive.</p></div><div class="student-life-video-grid"><article class="video-card video-card--featured"><div class="video-card__frame"><?php kcid_render_video_embed( 'student_life_featured', 'KENCID student life featured video', 'landscape' ); ?></div></article></div></div></section>
 		<section class="section-pad section-light" aria-labelledby="life-support-title"><div class="container"><div class="section-heading-row"><div><p class="eyebrow eyebrow--blue">Life at KENCID</p><h2 id="life-support-title">Support for the whole student</h2></div></div><div class="feature-grid feature-grid--color"><article class="feature-card feature-card--yellow" id="affairs"><span class="feature-card__icon"><?php echo kcid_icon( 'community' ); ?></span><h3>Student affairs</h3><p>Support with academic progress, wellbeing, campus communication, and the practical rhythm of college life.</p></article><article class="feature-card feature-card--blue" id="accommodation"><span class="feature-card__icon"><?php echo kcid_icon( 'shield' ); ?></span><h3>Accommodation partners</h3><p>Qwetu and Qejani Student Residences offer furnished living, study areas, recreation, high-speed internet, CCTV, secure access, and 24/7 security.</p></article><article class="feature-card feature-card--pink" id="clubs"><span class="feature-card__icon"><?php echo kcid_icon( 'star' ); ?></span><h3>Clubs & council</h3><p>Student council, music, drama, dance, and creative clubs build friendships, leadership, and confidence outside studio time.</p></article></div></div></section>
 		<section class="section-pad section-dark"><div class="container student-work__grid"><div class="section-intro"><p class="eyebrow">Studio culture</p><h2>Work that can be seen, touched, and discussed.</h2><p>Ideas move quickly when students have a place to test them together.</p></div><div class="work-strip" role="img" aria-label="Student design work and creative studio spaces"></div></div></section>
 		<?php
 		break;
 
 	case 'about-us':
-		kcid_render_page_header( 'About KENCID', 'Where creative futures begin.', 'Based in Nairobi, KENCID combines practical learning, industry relevance, and a supportive community for learners who want to make a mark.', 'hero-design-multidisciplinary-v2.png', 'futures', 'about' );
+		kcid_render_page_header( 'About KENCID', 'About Us', 'Based in Nairobi, KENCID combines practical learning, industry relevance, and a supportive community for learners who want to make a mark.', 'hero-design-multidisciplinary-v2.png', '', 'about' );
 		?>
-		<section class="section-pad about-page-story"><div class="container page-intro__grid"><div class="page-intro__copy"><p class="script-label">Why KENCID</p><h2>Learn the craft. Build the confidence. Find your next step.</h2><p>KENCID prioritizes hands-on learning experiences so students gain practical skills and industry knowledge. Through studios, mentorship, and real-world design challenges, learners prepare for careers across design, media, construction, technology, business, and related fields.</p><a class="button button--primary" href="<?php echo kcid_page_url( 'programs' ); ?>">Explore our courses <?php echo kcid_icon( 'arrow' ); ?></a></div><div class="about-page-story__media"><?php kcid_render_video_embed( 'about_story', 'About KENCID video', 'landscape' ); ?></div></div></section>
-		<section class="section-pad section-light"><div class="container"><div class="about-stat-grid"><div><strong>1+</strong><span>competitive courses</span></div><div><strong>99.9%</strong><span>student satisfaction</span></div><div><strong>TVETA</strong><span>accredited programs</span></div></div><div class="reason-grid reason-grid--wide reason-grid--about"><?php foreach ( kcid_reasons() as $reason ) : ?><article class="reason-card"><span><?php echo kcid_icon( $reason['icon'] ); ?></span><h3><?php echo esc_html( $reason['title'] ); ?></h3><p><?php echo esc_html( $reason['text'] ); ?></p></article><?php endforeach; ?></div></div></section>
+		<section class="section-pad about-page-story"><div class="container page-intro__grid"><div class="about-page-story__media"><?php kcid_render_video_embed( 'about_story', 'About KENCID video', 'landscape' ); ?></div><div class="page-intro__copy"><h2><span class="about-page-story__heading-lead">KENCID is a college for design and</span> <span class="about-page-story__heading-tail">inclusive futures.</span></h2><p>KENCID combines practical learning, industry relevance, and a supportive community for learners who want to make a mark across design, media, construction, technology, business, and related fields.</p><a class="button button--primary" href="<?php echo kcid_page_url( 'programs' ); ?>">Explore our courses <?php echo kcid_icon( 'arrow' ); ?></a></div></div></section>
+		<?php
+		$reason_images = array(
+			'program-sheet.webp',
+			'team/03-vanessa-okello.jpg',
+			'course-detail-interior-design.webp',
+			'cta-design-journey-clean.png',
+			'hero-design-studio.webp',
+			'about-students.webp',
+		);
+		?>
+		<section class="section-pad section-light about-why-section" aria-labelledby="about-why-title">
+			<div class="container">
+				<header class="about-why-section__header">
+					<p class="about-why-section__eyebrow"><span aria-hidden="true"></span>Why choose KENCID</p>
+					<h2 id="about-why-title">A Creative Education <span>That Works</span></h2>
+					<p>Practical learning. Real opportunities. A brighter creative future.</p>
+				</header>
+
+				<div class="about-stat-grid about-stat-grid--tiles">
+					<div class="about-stat-grid__tile about-stat-grid__tile--yellow"><span class="about-stat-grid__icon"><?php echo kcid_icon( 'cap' ); ?></span><strong>1+</strong><span>competitive courses</span></div>
+					<div class="about-stat-grid__tile about-stat-grid__tile--pink"><span class="about-stat-grid__icon"><?php echo kcid_icon( 'community' ); ?></span><strong>99.9%</strong><span>student satisfaction</span></div>
+					<div class="about-stat-grid__tile about-stat-grid__tile--blue"><span class="about-stat-grid__icon"><?php echo kcid_icon( 'star' ); ?></span><strong>TVETA</strong><span>accredited programs</span></div>
+				</div>
+
+				<div class="about-benefit-grid">
+					<?php foreach ( kcid_reasons() as $reason_index => $reason ) : ?>
+						<article class="about-benefit-card about-benefit-card--<?php echo esc_attr( (string) ( $reason_index % 3 ) ); ?>">
+							<div class="about-benefit-card__copy"><span class="about-benefit-card__icon"><?php echo kcid_icon( $reason['icon'] ); ?></span><h3><?php echo esc_html( $reason['title'] ); ?></h3><p><?php echo esc_html( $reason['text'] ); ?></p></div>
+							<div class="about-benefit-card__visual" style="background-image:url('<?php echo esc_url( kcid_asset( 'img/' . $reason_images[ $reason_index ] ) ); ?>')" aria-hidden="true"></div>
+						</article>
+					<?php endforeach; ?>
+				</div>
+
+				<div class="about-why-section__actions"><a class="button button--primary" href="<?php echo esc_url( kcid_page_url( 'apply-now' ) ); ?>">Join KENCID Today <?php echo kcid_icon( 'arrow' ); ?></a><a class="about-why-section__link" href="<?php echo esc_url( kcid_page_url( 'programs' ) ); ?>">Explore Our Programs <?php echo kcid_icon( 'arrow-right' ); ?></a></div>
+			</div>
+		</section>
 		<?php
 		break;
 
 	case 'our-team':
 		$team_members = kcid_team_members();
-		kcid_render_page_header( 'Our team', 'People who help ideas grow.', 'From studio mentors to admissions guides, our people help learners move from curiosity to confidence.', 'hero-business-v2.png', '', 'our-team' );
+		kcid_render_page_header( 'Our team', 'Our team', 'From studio mentors to admissions guides, our people help learners move from curiosity to confidence.', 'hero-business-v2.png', '', 'our-team' );
 		?>
-		<section class="section-pad team-section" aria-labelledby="team-title"><div class="container"><div class="section-heading-row"><div><p class="eyebrow eyebrow--blue">People at KENCID</p><h2 id="team-title">Meet the people behind KENCID.</h2></div><p class="team-section__count"><?php echo esc_html( count( $team_members ) ); ?> team members</p></div><div class="team-card-grid" role="list"><?php foreach ( $team_members as $member ) : ?><article class="team-card" role="listitem"><div class="team-card__media"><img src="<?php echo esc_url( kcid_asset( 'img/' . $member['image'] ) ); ?>" alt="<?php echo esc_attr( $member['name'] . ', ' . $member['role'] ); ?>" loading="lazy" /></div><div class="team-card__body"><h3><?php echo esc_html( $member['name'] ); ?></h3><p><?php echo esc_html( $member['role'] ); ?></p></div></article><?php endforeach; ?></div></div></section>
+		<section class="section-pad team-section" aria-label="People at KENCID"><div class="container"><div class="section-heading-row"><p class="team-section__count"><?php echo esc_html( count( $team_members ) ); ?> team members</p></div><div class="team-card-grid" role="list"><?php foreach ( $team_members as $member ) : ?><article class="team-card" role="listitem"><div class="team-card__media"><img src="<?php echo esc_url( kcid_asset( 'img/' . $member['image'] ) ); ?>" alt="<?php echo esc_attr( $member['name'] . ', ' . $member['role'] ); ?>" loading="lazy" /></div><div class="team-card__body"><h3><?php echo esc_html( $member['name'] ); ?></h3><p><?php echo esc_html( $member['role'] ); ?></p></div></article><?php endforeach; ?></div></div></section>
 		<?php
 		break;
 
@@ -492,7 +517,7 @@ $next_intake = kcid_next_intake();
 			array( 'name' => 'Interior Designers Association of Kenya', 'logo' => 'partner-idak-cropped.png' ),
 			array( 'name' => 'Design Week Africa', 'logo' => 'partner-design-week-africa.png' ),
 		);
-		kcid_render_page_header( 'Partners', 'Our creative partners.', 'Our academic and industry relationships help keep KCID learning credible, current, and connected to the creative economy.', 'hero-construction-management-v2.png', '', 'partners' );
+		kcid_render_page_header( 'Partners', 'Our partners', 'Our academic and industry relationships help keep KCID learning credible, current, and connected to the creative economy.', 'hero-construction-management-v2.png', '', 'partners' );
 		?>
 		<section class="section-pad partners-section partners-section--academic"><div class="container"><h2>Academic &amp; certification partners</h2><ul class="partner-logo-grid" role="list"><?php foreach ( array_slice( $partners, 0, 4 ) as $partner ) : ?><li class="partner-logo"><img src="<?php echo esc_url( kcid_asset( 'img/' . $partner['logo'] ) ); ?>" alt="<?php echo esc_attr( $partner['name'] ); ?>" loading="lazy" /></li><?php endforeach; ?></ul></div></section>
 		<section class="section-pad partners-section partners-section--industry"><div class="container"><h2>Industry partners</h2><ul class="partner-logo-grid partner-logo-grid--industry" role="list"><?php foreach ( array_slice( $partners, 4 ) as $partner ) : ?><li class="partner-logo"><img src="<?php echo esc_url( kcid_asset( 'img/' . $partner['logo'] ) ); ?>" alt="<?php echo esc_attr( $partner['name'] ); ?>" loading="lazy" /></li><?php endforeach; ?></ul></div></section>
@@ -500,7 +525,7 @@ $next_intake = kcid_next_intake();
 		break;
 
 	case 'contact':
-		kcid_render_page_header( 'Contact', 'Talk to KENCID admissions.', 'Reach the college for applications, course guidance, school visits, accommodation, and student-life support.', 'hero-business-studio.png', '', 'contact' );
+		kcid_render_page_header( 'Contact', 'Contact', 'Reach the college for applications, course guidance, school visits, accommodation, and student-life support.', 'hero-business-studio.png', '', 'contact' );
 		?>
 		<section class="section-pad contact-section"><div class="container contact-grid contact-grid--refreshed"><div class="contact-card contact-card--image"><div><p class="eyebrow">Come say hello</p><h2>Let’s talk about what comes next.</h2><p>Our team is ready to help you choose a course, understand the application process, or plan a visit to the Nairobi campus.</p></div><div class="contact-details"><p><?php echo kcid_icon( 'phone' ); ?><a href="tel:+254797888111"><?php echo esc_html( $contact['phone'] ); ?></a></p><p><?php echo kcid_icon( 'phone' ); ?><a href="tel:+254791888111"><?php echo esc_html( $contact['phone_alt'] ); ?></a></p><p><?php echo kcid_icon( 'mail' ); ?><a href="mailto:<?php echo esc_attr( $contact['email'] ); ?>"><?php echo esc_html( $contact['email'] ); ?></a></p><p><?php echo kcid_icon( 'pin' ); ?><span><?php echo esc_html( $contact['address'] ); ?></span></p></div></div><form class="contact-form contact-form--refreshed" aria-label="Contact form"><div class="form-heading"><p class="eyebrow eyebrow--blue">Send a message</p><h2>How can we help?</h2></div><label for="contact-name">Name<input id="contact-name" type="text" autocomplete="name" required></label><label for="contact-email">Email<input id="contact-email" type="email" autocomplete="email" required></label><label for="contact-message">Message<textarea id="contact-message" rows="5" required></textarea></label><a class="button button--primary" href="mailto:info@kencid.ac.ke">Send Email <?php echo kcid_icon( 'arrow' ); ?></a></form></div></section>
 		<?php

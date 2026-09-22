@@ -25,11 +25,6 @@ $program_icons = array(
 $map_query     = 'Kenya College of Interior Design, ' . $contact['address'];
 $map_embed_url = 'https://www.google.com/maps?q=' . rawurlencode( $map_query ) . '&output=embed';
 $directions_url = 'https://www.google.com/maps/dir/?api=1&destination=' . rawurlencode( $map_query );
-$cta_features = array(
-	array( 'icon' => 'pen-tool', 'label' => 'Hands-On Learning', 'tone' => 'yellow' ),
-	array( 'icon' => 'community', 'label' => 'Expert Faculty', 'tone' => 'blue' ),
-	array( 'icon' => 'bulb', 'label' => 'Creative Community', 'tone' => 'pink' ),
-);
 ?>
 <section class="prefooter-cta" aria-labelledby="prefooter-cta-title">
 	<div class="prefooter-cta__shell">
@@ -38,14 +33,6 @@ $cta_features = array(
 			<p>Join KENCID and turn your passion into practical skills, industry experience and a brighter future.</p>
 			<a class="button button--primary prefooter-cta__button" href="<?php echo esc_url( kcid_page_url( 'apply-now' ) ); ?>">Apply Now <?php echo kcid_icon( 'arrow-right' ); ?></a>
 		</div>
-		<ul class="prefooter-cta__features" aria-label="KENCID benefits">
-			<?php foreach ( $cta_features as $feature ) : ?>
-				<li>
-					<span class="prefooter-cta__feature-icon prefooter-cta__feature-icon--<?php echo esc_attr( $feature['tone'] ); ?>"><?php echo kcid_icon( $feature['icon'] ); ?></span>
-					<strong><?php echo esc_html( $feature['label'] ); ?></strong>
-				</li>
-			<?php endforeach; ?>
-		</ul>
 	</div>
 </section>
 <footer id="site-footer" class="site-footer">
@@ -64,19 +51,19 @@ $cta_features = array(
 			</div>
 		</div>
 		<nav class="footer-links footer-panel" aria-label="<?php esc_attr_e( 'Quick links', 'kencid-college' ); ?>">
-			<h2 class="footer-heading"><span><?php echo kcid_icon( 'link' ); ?></span>Quick Links</h2>
+			<h2 class="footer-heading">Quick Links</h2>
 			<?php foreach ( $quick_links as $item ) : ?>
 				<a class="footer-link<?php echo is_page( $item['slug'] ) ? ' is-current' : ''; ?>" href="<?php echo kcid_page_url( $item['slug'] ); ?>"><span><?php echo kcid_icon( $item['icon'] ); ?></span><?php echo esc_html( $item['label'] ); ?></a>
 			<?php endforeach; ?>
 		</nav>
 		<nav class="footer-links footer-panel" aria-label="<?php esc_attr_e( 'Programs', 'kencid-college' ); ?>">
-			<h2 class="footer-heading"><span><?php echo kcid_icon( 'book-open' ); ?></span>Programs</h2>
+			<h2 class="footer-heading">Programs</h2>
 			<?php foreach ( kcid_programs() as $program ) : ?>
 				<a class="footer-link" href="<?php echo kcid_page_url( 'programs' ); ?>#<?php echo esc_attr( $program['slug'] ); ?>"><span><?php echo kcid_icon( $program_icons[ $program['slug'] ] ?? 'cap' ); ?></span><?php echo esc_html( $program['title'] ); ?></a>
 			<?php endforeach; ?>
 		</nav>
 		<div class="footer-contact footer-panel">
-			<h2 class="footer-heading"><span><?php echo kcid_icon( 'phone' ); ?></span>Contact Us</h2>
+			<h2 class="footer-heading">Contact Us</h2>
 			<p><?php echo kcid_icon( 'phone' ); ?><a href="tel:+254797888111"><?php echo esc_html( $contact['phone'] ); ?></a></p>
 			<p><?php echo kcid_icon( 'mail' ); ?><a href="mailto:<?php echo esc_attr( $contact['email'] ); ?>"><?php echo esc_html( $contact['email'] ); ?></a></p>
 			<p><?php echo kcid_icon( 'pin' ); ?><span><?php echo esc_html( $contact['address'] ); ?></span></p>

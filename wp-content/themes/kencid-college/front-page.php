@@ -8,18 +8,26 @@
 get_header();
 $schools = kcid_schools();
 $school_images = array(
-	'School of Building Sciences'              => 'kencid-source/school-building-sciences.jpg',
-	'School of Design'                         => 'kencid-source/school-design.jpg',
-	'School of Media and Communication'        => 'kencid-source/school-media.jpeg',
-	'School of Information Technology'         => 'kencid-source/school-information-technology.jpg',
-	'School of Engineering & Automotive Design' => 'kencid-source/school-engineering.jpg',
-	'School of Business Management'            => 'kencid-source/school-business.webp',
-	'School of Creative & Performing Arts'     => 'kencid-source/school-creative-performing-arts.jpg',
-	'School of Health Sciences'                 => 'kencid-source/school-health-sciences.webp',
-	'School of Hospitality Management'          => 'kencid-source/school-hospitality-management.jpg',
-	'School of Trades & Technology'             => 'courses-raster/welding-and-fabrication.webp',
+	'School of Building Sciences & Spatial Design'               => 'kencid-source/school-building-sciences.jpg',
+	'School of Design, Creative & Performing Arts'               => 'kencid-source/school-design.jpg',
+	'School of Engineering, Mobility & Manufacturing Technology' => 'kencid-source/school-engineering.jpg',
+	'School of Trades, Technical & Applied Technology'           => 'courses-raster/welding-and-fabrication.webp',
+	'School of Computing, Information & Digital Technology'      => 'kencid-source/school-information-technology.jpg',
+	'School of Media, Communication & Digital Content'           => 'kencid-source/school-media.jpeg',
+	'School of Business, Entrepreneurship & Management'          => 'kencid-source/school-business.webp',
+	'School of Hospitality, Tourism & Culinary Arts'             => 'kencid-source/school-hospitality-management.jpg',
+	'School of Health Sciences & Allied Health'                  => 'kencid-source/school-health-sciences.webp',
 );
 $school_card_content = array(
+	'School of Building Sciences & Spatial Design'               => array( 'description' => 'Shape the places where people live, work and belong.', 'icon' => 'building' ),
+	'School of Design, Creative & Performing Arts'               => array( 'description' => 'Create, perform and make work that matters.', 'icon' => 'palette' ),
+	'School of Engineering, Mobility & Manufacturing Technology' => array( 'description' => 'Design, build and move practical solutions forward.', 'icon' => 'tools' ),
+	'School of Trades, Technical & Applied Technology'           => array( 'description' => 'Build technical capability through applied learning.', 'icon' => 'tools' ),
+	'School of Computing, Information & Digital Technology'      => array( 'description' => 'Develop the digital skills for emerging industries.', 'icon' => 'monitor' ),
+	'School of Media, Communication & Digital Content'           => array( 'description' => 'Create stories and information for changing platforms.', 'icon' => 'media' ),
+	'School of Business, Entrepreneurship & Management'          => array( 'description' => 'Turn knowledge, ideas and opportunity into value.', 'icon' => 'briefcase' ),
+	'School of Hospitality, Tourism & Culinary Arts'             => array( 'description' => 'Create thoughtful guest, travel and culinary experiences.', 'icon' => 'sofa' ),
+	'School of Health Sciences & Allied Health'                  => array( 'description' => 'Support health, wellbeing and community care.', 'icon' => 'heart' ),
 	'School of Building Sciences'               => array( 'description' => 'Design and build a better tomorrow.', 'icon' => 'building' ),
 	'School of Design'                          => array( 'description' => 'Create inspiring spaces for real life.', 'icon' => 'sofa' ),
 	'School of Media and Communication'         => array( 'description' => 'Find your voice. Shape the story.', 'icon' => 'media' ),
@@ -52,8 +60,8 @@ $industry_partners = array(
 );
 $hero_slides = array(
 	array(
-		'eyebrow' => 'Welcome to',
-		'title'   => 'Kenya College of Interior Design',
+		'eyebrow' => 'Kenya College of Interior Design',
+		'title'   => 'Build Your Future. Create What Matters.',
 		'image'   => 'hero-interior-design.png',
 		'cta'     => 'Apply Now',
 		'url'     => kcid_page_url( 'apply-now' ),
@@ -68,7 +76,7 @@ $hero_slides = array(
 	array(
 		'eyebrow' => 'Study',
 		'title'   => 'Architecture',
-		'image'   => 'school-building-sciences.png',
+		'image'   => 'hero-architecture-studio.png',
 		'cta'     => 'Apply Now',
 		'url'     => kcid_page_url( 'apply-now' ),
 	),
@@ -156,9 +164,9 @@ $blog_posts = array(
 				<img src="<?php echo esc_url( kcid_asset( 'img/about-students.png' ) ); ?>" alt="KENCID students wearing the college colours together" loading="lazy" decoding="async" width="1254" height="1254" />
 			</div>
 			<div class="about-section__content">
-				<h2 id="about-section-title"><span class="about-section__heading-lead">The Comprehensive College of</span> <span class="about-section__heading-tail">Design</span></h2>
-				<p class="section-copy">At KENCID, we believe that every great design begins with a single step, and that step starts with you. Whether you dream of crafting breathtaking interiors, designing awe-inspiring architecture, or shaping captivating landscapes, our college is the perfect place to begin your journey.</p>
-				<a class="about-section__cta" href="<?php echo kcid_page_url( 'programs' ); ?>">Explore Programs <span class="about-section__cta-icon" aria-hidden="true"><?php echo kcid_icon( 'arrow-right' ); ?></span></a>
+				<h2 id="about-section-title"><span class="about-section__heading-lead">The Comprehensive College of</span> <span class="about-section__heading-tail">Design, Technology &amp; Applied Professions</span></h2>
+				<p class="section-copy">KENCID brings together design, the built environment, engineering, technology, trades, computing, media, business, hospitality, health sciences and the creative and performing arts. Education goes beyond the classroom: knowledge becomes competence, competence becomes practice, and practice creates value.</p>
+				<a class="about-section__cta" href="<?php echo kcid_page_url( 'programs' ); ?>">Explore Programme Areas <span class="about-section__cta-icon" aria-hidden="true"><?php echo kcid_icon( 'arrow-right' ); ?></span></a>
 			</div>
 		</div>
 	</section>
@@ -215,7 +223,7 @@ $blog_posts = array(
 		<div class="design-wide">
 			<span class="schools-section__icon" aria-hidden="true"><?php echo kcid_icon( 'cap' ); ?></span>
 			<h2 id="schools-section-title">Our <span>Schools</span></h2>
-			<p class="schools-section__description">At KENCID, we bring together creativity, technology and practical learning across diverse schools so you can build the skills, confidence and opportunities for a successful future.</p>
+			<p class="schools-section__description">Nine multidisciplinary schools connect creativity, technology and practical learning so learners can build capability for professional practice, enterprise and lifelong development.</p>
 			<form class="schools-search" role="search" aria-label="Search schools">
 				<label class="screen-reader-text" for="school-search">Search schools</label>
 				<svg class="schools-search__icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m16 16 5 5"></path></svg>
@@ -243,7 +251,7 @@ $blog_posts = array(
 		<div class="design-wide why-choose-us__grid">
 			<div class="why-choose-us__content">
 				<h2 id="why-choose-us-title"><span class="why-choose-us__heading-lead">Take the next step toward</span> <span class="why-choose-us__heading-tail">your personal and professional goals</span></h2>
-				<p class="section-copy">We prioritize hands-on learning experiences to ensure students gain practical skills and industry knowledge. Our commitment to excellence fosters a supportive environment where students can thrive and pursue their passions with confidence.</p>
+				<p class="section-copy">KENCID combines practical training, projects, laboratories, studios, workshops, industry exposure, research, entrepreneurship, field experience and professional practice. Learn it. Prove it. Practice it.</p>
 				<a class="why-choose-us__cta" href="<?php echo kcid_page_url( 'apply-now' ); ?>">Apply Now <span class="why-choose-us__cta-icon" aria-hidden="true"><?php echo kcid_icon( 'arrow-right' ); ?></span></a>
 			</div>
 			<div class="why-choose-us__media">

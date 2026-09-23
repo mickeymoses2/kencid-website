@@ -29,7 +29,7 @@
 				</a>
 			</div>
 			<nav class="site-utility__links" aria-label="Quick links">
-				<a href="<?php echo kcid_page_url( 'programs' ); ?>">Programs</a>
+				<a href="<?php echo kcid_page_url( 'programs' ); ?>">Programme Areas</a>
 				<a href="<?php echo kcid_page_url( 'admissions' ); ?>">Admissions</a>
 				<a href="<?php echo kcid_page_url( 'about-us' ); ?>">About KENCID</a>
 				<a href="<?php echo kcid_page_url( 'contact' ); ?>">Contact</a>
@@ -45,6 +45,20 @@
 			<span class="menu-toggle__bar"></span>
 			<span class="screen-reader-text"><?php esc_html_e( 'Open menu', 'kencid-college' ); ?></span>
 		</button>
+
+		<?php
+		$school_menu_cards = array(
+			'School of Building Sciences & Spatial Design'               => array( 'image' => 'courses-raster/architecture.png', 'icon' => 'building' ),
+			'School of Design, Creative & Performing Arts'               => array( 'image' => 'courses-raster/fashion-design.png', 'icon' => 'palette' ),
+			'School of Engineering, Mobility & Manufacturing Technology' => array( 'image' => 'courses-raster/automotive-engineering.png', 'icon' => 'tools' ),
+			'School of Trades, Technical & Applied Technology'           => array( 'image' => 'courses-raster/welding-and-fabrication.png', 'icon' => 'tools' ),
+			'School of Computing, Information & Digital Technology'      => array( 'image' => 'courses-raster/software-development.png', 'icon' => 'monitor' ),
+			'School of Media, Communication & Digital Content'           => array( 'image' => 'courses-raster/videography.png', 'icon' => 'media' ),
+			'School of Business, Entrepreneurship & Management'          => array( 'image' => 'courses-raster/business-management.png', 'icon' => 'briefcase' ),
+			'School of Hospitality, Tourism & Culinary Arts'             => array( 'image' => 'courses-raster/hotel-restaurant-management.png', 'icon' => 'sofa' ),
+			'School of Health Sciences & Allied Health'                  => array( 'image' => 'courses-raster/community-health-worker.png', 'icon' => 'heart' ),
+		);
+		?>
 
 		<nav class="primary-nav" id="primary-navigation" aria-label="<?php esc_attr_e( 'Primary navigation', 'kencid-college' ); ?>">
 			<a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a>
@@ -66,14 +80,21 @@
 				</button>
 				<div class="nav-panel nav-panel--schools" id="schools-submenu" hidden>
 					<?php foreach ( kcid_schools() as $school ) : ?>
-						<a class="nav-school-link" href="<?php echo esc_url( kcid_school_url( $school ) ); ?>">
-							<span class="nav-school-link__icon" aria-hidden="true"><?php echo kcid_icon( 'school' ); ?></span>
-							<span><?php echo esc_html( kcid_school_label( $school ) ); ?></span>
+						<?php $school_card = $school_menu_cards[ $school ]; ?>
+						<a class="nav-school-card" href="<?php echo esc_url( kcid_school_url( $school ) ); ?>">
+							<span class="nav-school-card__image" aria-hidden="true">
+								<img src="<?php echo esc_url( kcid_asset( 'img/' . $school_card['image'] ) ); ?>" alt="" width="320" height="180" loading="eager" decoding="sync" />
+							</span>
+							<span class="nav-school-card__icon" aria-hidden="true"><?php echo kcid_icon( $school_card['icon'] ); ?></span>
+							<span class="nav-school-card__footer">
+								<span class="nav-school-card__label"><?php echo esc_html( kcid_school_label( $school ) ); ?></span>
+								<span class="nav-school-card__arrow" aria-hidden="true"><?php echo kcid_icon( 'arrow-right' ); ?></span>
+							</span>
 						</a>
 					<?php endforeach; ?>
 				</div>
 			</div>
-			<a href="<?php echo kcid_page_url( 'programs' ); ?>">Courses</a>
+			<a href="<?php echo kcid_page_url( 'programs' ); ?>">Programme Areas</a>
 			<a href="<?php echo kcid_page_url( 'student-life' ); ?>">Student Life</a>
 			<a href="<?php echo kcid_page_url( 'projects' ); ?>">Projects</a>
 			<a href="<?php echo kcid_page_url( 'about-us' ); ?>">Resources</a>

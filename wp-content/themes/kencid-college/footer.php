@@ -7,7 +7,7 @@
 
 $contact = kcid_contacts();
 $quick_links = array(
-	array( 'label' => 'Programs', 'slug' => 'programs', 'icon' => 'cap' ),
+	array( 'label' => 'Programme Areas', 'slug' => 'programs', 'icon' => 'cap' ),
 	array( 'label' => 'Admissions', 'slug' => 'admissions', 'icon' => 'file-text' ),
 	array( 'label' => 'Student Life', 'slug' => 'student-life', 'icon' => 'community' ),
 	array( 'label' => 'Projects', 'slug' => 'projects', 'icon' => 'folder' ),
@@ -29,8 +29,8 @@ $directions_url = 'https://www.google.com/maps/dir/?api=1&destination=' . rawurl
 <section class="prefooter-cta" aria-labelledby="prefooter-cta-title">
 	<div class="prefooter-cta__shell">
 		<div class="prefooter-cta__content">
-			<h2 id="prefooter-cta-title"><span class="prefooter-cta__title-line">Ready to Begin Your</span><span>Design Journey?</span></h2>
-			<p>Join KENCID and turn your passion into practical skills, industry experience and a brighter future.</p>
+			<h2 id="prefooter-cta-title"><span class="prefooter-cta__title-line">Ready to Build Your</span><span>Future?</span></h2>
+			<p>Join KENCID to learn, prove your competence and prepare for<br class="prefooter-cta__desktop-break"> professional practice, enterprise and lifelong development.</p>
 			<a class="button button--primary prefooter-cta__button" href="<?php echo esc_url( kcid_page_url( 'apply-now' ) ); ?>">Apply Now <?php echo kcid_icon( 'arrow-right' ); ?></a>
 		</div>
 	</div>
@@ -42,7 +42,7 @@ $directions_url = 'https://www.google.com/maps/dir/?api=1&destination=' . rawurl
 			<a class="brand" href="<?php echo esc_url( home_url( '/' ) ); ?>">
 				<img class="brand__image" src="<?php echo esc_url( kcid_asset( 'img/kencid-logo-mustard.png' ) ); ?>" alt="Kenya College of Interior Design" />
 			</a>
-			<p>Empowering creatives to design spaces, shape stories, and move the world.</p>
+			<p>A comprehensive college of design, technology and applied professions.</p>
 			<div class="socials" aria-label="<?php esc_attr_e( 'Social links', 'kencid-college' ); ?>">
 				<a href="#" aria-label="Facebook"><?php echo kcid_icon( 'facebook' ); ?></a>
 				<a href="#" aria-label="Instagram"><?php echo kcid_icon( 'instagram' ); ?></a>
@@ -56,8 +56,8 @@ $directions_url = 'https://www.google.com/maps/dir/?api=1&destination=' . rawurl
 				<a class="footer-link<?php echo is_page( $item['slug'] ) ? ' is-current' : ''; ?>" href="<?php echo kcid_page_url( $item['slug'] ); ?>"><span><?php echo kcid_icon( $item['icon'] ); ?></span><?php echo esc_html( $item['label'] ); ?></a>
 			<?php endforeach; ?>
 		</nav>
-		<nav class="footer-links footer-panel" aria-label="<?php esc_attr_e( 'Programs', 'kencid-college' ); ?>">
-			<h2 class="footer-heading">Programs</h2>
+		<nav class="footer-links footer-panel" aria-label="<?php esc_attr_e( 'Programme areas', 'kencid-college' ); ?>">
+			<h2 class="footer-heading">Programme Areas</h2>
 			<?php foreach ( kcid_programs() as $program ) : ?>
 				<a class="footer-link" href="<?php echo kcid_page_url( 'programs' ); ?>#<?php echo esc_attr( $program['slug'] ); ?>"><span><?php echo kcid_icon( $program_icons[ $program['slug'] ] ?? 'cap' ); ?></span><?php echo esc_html( $program['title'] ); ?></a>
 			<?php endforeach; ?>

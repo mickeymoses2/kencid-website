@@ -350,16 +350,15 @@ function kcid_current_course(): ?array {
 
 function kcid_school_route_path( string $school ): string {
 	$paths = array(
-		'school-of-building-sciences'             => 'school-of-building-science',
-		'school-of-design'                        => 'school-of-design',
-		'school-of-media-and-communication'      => 'school-of-media-and-communication',
-		'school-of-information-technology'        => 'school-of-information-technology',
-		'school-of-engineering-automotive-design' => 'school-of-engineering-automotive-design',
-		'school-of-business-management'           => 'school-of-business-management',
-		'school-of-creative-performing-arts'      => 'school-of-creative-performing-arts',
-		'school-of-trades-technology'             => 'school-of-trades-technology',
-		'school-of-hospitality-management'        => 'school-of-hospitality-management',
-		'school-of-health-sciences'                => 'school-of-health-sciences',
+		'school-of-building-sciences-spatial-design'               => 'school-of-building-science',
+		'school-of-design-creative-performing-arts'               => 'school-of-design',
+		'school-of-engineering-mobility-manufacturing-technology' => 'school-of-engineering-automotive-design',
+		'school-of-trades-technical-applied-technology'           => 'school-of-trades-technology',
+		'school-of-computing-information-digital-technology'      => 'school-of-information-technology',
+		'school-of-media-communication-digital-content'           => 'school-of-media-and-communication',
+		'school-of-business-entrepreneurship-management'          => 'school-of-business-management',
+		'school-of-hospitality-tourism-culinary-arts'             => 'school-of-hospitality-management',
+		'school-of-health-sciences-allied-health'                 => 'school-of-health-sciences',
 	);
 	$slug = sanitize_title( $school );
 	return $paths[ $slug ] ?? 'schools/' . $slug;
@@ -378,16 +377,15 @@ function kcid_course_path_for_slug( string $slug ): string {
 		return $slug;
 	}
 	$school_paths = array(
-		'School of Building Sciences'               => 'schools/school-of-building-science',
-		'School of Design'                          => 'school-of-design',
-		'School of Media and Communication'         => 'schools/school-of-media-and-communication',
-		'School of Information Technology'          => 'schools/school-of-information-technology',
-		'School of Engineering & Automotive Design' => 'schools/school-of-engineering-automotive-design',
-		'School of Business Management'             => 'schools/school-of-business-management',
-		'School of Creative & Performing Arts'      => 'schools/school-of-creative-performing-arts',
-		'School of Trades & Technology'             => 'schools/school-of-trades-technology',
-		'School of Hospitality Management'          => 'schools/school-of-hospitality-management',
-		'School of Health Sciences'                  => 'schools/school-of-health-sciences',
+		'School of Building Sciences & Spatial Design'               => 'schools/school-of-building-science',
+		'School of Design, Creative & Performing Arts'               => 'school-of-design',
+		'School of Engineering, Mobility & Manufacturing Technology' => 'schools/school-of-engineering-automotive-design',
+		'School of Trades, Technical & Applied Technology'           => 'schools/school-of-trades-technology',
+		'School of Computing, Information & Digital Technology'      => 'schools/school-of-information-technology',
+		'School of Media, Communication & Digital Content'           => 'schools/school-of-media-and-communication',
+		'School of Business, Entrepreneurship & Management'          => 'schools/school-of-business-management',
+		'School of Hospitality, Tourism & Culinary Arts'             => 'schools/school-of-hospitality-management',
+		'School of Health Sciences & Allied Health'                  => 'schools/school-of-health-sciences',
 	);
 	$course_slugs = array(
 		'landscape-architecture'              => 'landscape-architecture-2',

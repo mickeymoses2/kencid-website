@@ -95,15 +95,15 @@ function kcid_upcoming_intakes( int $count = 3, ?DateTimeInterface $now = null )
 }
 
 function kcid_programs(): array {
-	$next_intake = kcid_next_intake();
+	$featured = array( 'interior-design', 'graphic-design', 'automotive-engineering', 'carpentry', 'artificial-intelligence', 'journalism' );
 
-	return array(
-		array( 'title' => 'Interior Design', 'school' => 'School of Building Sciences', 'slug' => 'interior-design', 'summary' => 'Plan residential and commercial spaces through drawing, materials, lighting, furniture, and client-led studio work.', 'tile' => 'tile-1', 'duration' => '3 years', 'mode' => 'Full-time', 'entry' => 'KCSE C- and above', 'qualification' => 'Diploma', 'intake' => $next_intake['label'], 'image' => 'courses-raster/interior-design.png' ),
-		array( 'title' => 'Architecture', 'school' => 'School of Building Sciences', 'slug' => 'architecture', 'summary' => 'Build a design foundation in architectural drafting, model making, building systems, and sustainable spaces.', 'tile' => 'tile-2', 'duration' => '3 years', 'mode' => 'Full-time', 'entry' => 'KCSE C- and above', 'qualification' => 'Diploma', 'intake' => $next_intake['label'], 'image' => 'courses-raster/architecture.png' ),
-		array( 'title' => 'Fashion Design', 'school' => 'School of Design', 'slug' => 'fashion-design', 'summary' => 'Explore garment construction, textile choices, fashion illustration, styling, and creative entrepreneurship.', 'tile' => 'tile-3', 'duration' => '2 years', 'mode' => 'Full-time', 'entry' => 'KCSE D+ and above', 'qualification' => 'Diploma', 'intake' => $next_intake['label'], 'image' => 'courses-raster/fashion-design.png' ),
-		array( 'title' => 'Graphic Design', 'school' => 'School of Design', 'slug' => 'graphic-design', 'summary' => 'Create strong visual identities, layouts, digital campaigns, and communication systems for modern brands.', 'tile' => 'tile-4', 'duration' => '2 years', 'mode' => 'Full-time', 'entry' => 'KCSE D+ and above', 'qualification' => 'Diploma', 'intake' => $next_intake['label'], 'image' => 'courses-raster/graphic-design.png' ),
-		array( 'title' => 'Film & Cinematography', 'school' => 'School of Media and Communication', 'slug' => 'film-cinematography', 'summary' => 'Learn camera craft, visual storytelling, lighting, editing, and production workflows for screen media.', 'tile' => 'tile-5', 'duration' => '2 years', 'mode' => 'Full-time', 'entry' => 'KCSE D+ and above', 'qualification' => 'Diploma', 'intake' => $next_intake['label'], 'image' => 'courses-raster/film-cinematography.png' ),
-		array( 'title' => 'Construction Management', 'school' => 'School of Building Sciences', 'slug' => 'construction-management', 'summary' => 'Prepare for site coordination, project planning, safety, costing, and delivery in the built environment.', 'tile' => 'tile-6', 'duration' => '3 years', 'mode' => 'Full-time', 'entry' => 'KCSE C- and above', 'qualification' => 'Diploma', 'intake' => $next_intake['label'], 'image' => 'courses-raster/construction-management.png' ),
+	return array_values(
+		array_filter(
+			kcid_catalog_programs(),
+			static function ( array $program ) use ( $featured ): bool {
+				return in_array( $program['slug'], $featured, true );
+			}
+		)
 	);
 }
 
@@ -352,16 +352,15 @@ function kcid_events(): array {
 
 function kcid_schools(): array {
 	return array(
-		'School of Building Sciences',
-		'School of Design',
-		'School of Media and Communication',
-		'School of Information Technology',
-		'School of Engineering & Automotive Design',
-		'School of Business Management',
-		'School of Creative & Performing Arts',
-		'School of Health Sciences',
-		'School of Hospitality Management',
-		'School of Trades & Technology',
+		'School of Building Sciences & Spatial Design',
+		'School of Design, Creative & Performing Arts',
+		'School of Engineering, Mobility & Manufacturing Technology',
+		'School of Trades, Technical & Applied Technology',
+		'School of Computing, Information & Digital Technology',
+		'School of Media, Communication & Digital Content',
+		'School of Business, Entrepreneurship & Management',
+		'School of Hospitality, Tourism & Culinary Arts',
+		'School of Health Sciences & Allied Health',
 	);
 }
 
@@ -371,6 +370,18 @@ function kcid_school_label( string $name ): string {
 
 function kcid_school_by_slug( string $slug ): ?array {
 	$slug = sanitize_title( $slug );
+	$legacy_slugs = array(
+		'school-of-building-sciences' => 'school-of-building-sciences-spatial-design',
+		'school-of-design' => 'school-of-design-creative-performing-arts',
+		'school-of-engineering-automotive-design' => 'school-of-engineering-mobility-manufacturing-technology',
+		'school-of-trades-technology' => 'school-of-trades-technical-applied-technology',
+		'school-of-information-technology' => 'school-of-computing-information-digital-technology',
+		'school-of-media-and-communication' => 'school-of-media-communication-digital-content',
+		'school-of-business-management' => 'school-of-business-entrepreneurship-management',
+		'school-of-hospitality-management' => 'school-of-hospitality-tourism-culinary-arts',
+		'school-of-health-sciences' => 'school-of-health-sciences-allied-health',
+	);
+	$slug = $legacy_slugs[ $slug ] ?? $slug;
 
 	foreach ( kcid_course_catalog() as $school ) {
 		if ( sanitize_title( $school['name'] ) === $slug ) {
@@ -384,64 +395,58 @@ function kcid_school_by_slug( string $slug ): ?array {
 function kcid_course_catalog(): array {
 	return array(
 		array(
-			'name' => 'School of Building Sciences',
-			'intro' => 'Shape the spaces, structures, and places where people live and work.',
-			'courses' => array( 'Interior Design', 'Architecture', 'Landscape Architecture', 'Urban Design', 'Quantity Survey', 'Construction Management', 'Building Technology', 'Preservation Design', 'Universal Design', 'Architectural History', 'Interior Architecture' ),
+			'name' => 'School of Building Sciences & Spatial Design',
+			'intro' => 'Shape the spaces, structures and environments where people live, work and belong.',
+			'courses' => array( 'Interior Design', 'Interior Architecture', 'Architecture', 'Architectural Technology', 'Building Technology', 'Construction', 'Landscape Design', 'Urban Design', 'Spatial Planning', 'Facilities Management', 'Universal Design', 'Sustainable Design', 'BIM', 'Building Performance' ),
 			'image' => 'kencid-source/school-building-sciences.jpg',
 		),
 		array(
-			'name' => 'School of Design',
-			'intro' => 'Turn ideas into visual, spatial, digital, and product experiences.',
-			'courses' => array( 'Furniture Design', 'Accessory Design', 'Fashion Design', 'Jewelry Design and Metal Arts', 'Game Design and Development', 'Fiber & Textile Design', 'Graphic Design', 'Web Design and New Media', 'Interactive Media Design', 'Animation Design', 'Product Design', 'Design', 'Motion Media Design', 'Industrial Design', 'Knitwear Design', 'User Experience Design and Research', 'Textile Design', 'Costume Design', 'Printing', 'Fashion Styling', 'Sneaker Design' ),
+			'name' => 'School of Design, Creative & Performing Arts',
+			'intro' => 'Connect design, visual arts, fashion, digital creativity, entertainment and performance.',
+			'courses' => array( 'Graphic Design', 'Product Design', 'Industrial Design', 'Furniture', 'Fashion', 'Textile', 'Jewellery', 'Illustration', 'Animation', 'Game Design', 'UX/UI', 'Web Design', 'AR/VR/XR', 'Fine Art', 'Sculpture', 'Acting', 'Theatre', 'Dance', 'Music', 'Vocal Performance', 'Set Design', 'Production Design' ),
 			'image' => 'kencid-source/school-design.jpg',
 		),
 		array(
-			'name' => 'School of Media and Communication',
-			'intro' => 'Build the craft and confidence to communicate through film, sound, and story.',
-			'courses' => array( 'Cinema Studies', 'Communications', 'Film and TV', 'French', 'Visual Effects', 'Fashion Journalism', 'Animation and Visual Effects', 'Videography', 'Journalism and Media Studies', 'Set Design', 'Motion Picture and Television', 'Writing and Directing for Film', 'Cinematography', 'Screenwriting' ),
-			'image' => 'kencid-source/school-media.jpeg',
+			'name' => 'School of Engineering, Mobility & Manufacturing Technology',
+			'intro' => 'Apply engineering, mobility, manufacturing, automation and transportation thinking to real-world challenges.',
+			'courses' => array( 'Automotive Engineering', 'Vehicle Design', 'Automotive Design', 'Bus Design', 'Motorcycle Design', 'Truck Design', 'Rail Vehicle Design', 'Marine & Boat Design', 'Transportation Design', 'Public Transport Design', 'Universal Transportation Design', 'Accessible Mobility', 'Electric Vehicles', 'Hybrid Vehicles', 'Micromobility', 'CAD/CAM', 'CNC', 'Digital Fabrication', 'Robotics', 'Automation', 'Smart Manufacturing' ),
+			'image' => 'kencid-source/school-engineering.jpg',
 		),
 		array(
-			'name' => 'School of Information Technology',
-			'intro' => 'Learn the digital tools and systems powering the creative economy.',
-			'courses' => array( 'Information Technology', 'Business Information Technology', 'Computer Science', 'Software Development', 'Networking', 'Information Security', 'Cybersecurity', 'Web Development', 'Database Management' ),
+			'name' => 'School of Trades, Technical & Applied Technology',
+			'intro' => 'Develop practical occupational and technical skills through applied learning.',
+			'courses' => array( 'Carpentry', 'Joinery', 'Masonry', 'Plumbing', 'Electrical Installation', 'Welding', 'Fabrication', 'Painting', 'Tiling', 'Flooring', 'Ceiling Installation', 'Cabinet Making', 'Furniture Production', 'Solar Technology', 'Motor Vehicle Mechanics', 'CNC Machining', '3D Printing', 'Technical Digital Fabrication' ),
+			'image' => 'courses-raster/welding-and-fabrication.webp',
+		),
+		array(
+			'name' => 'School of Computing, Information & Digital Technology',
+			'intro' => 'Prepare for the digital economy and emerging technology industries.',
+			'courses' => array( 'Artificial Intelligence', 'Machine Learning', 'Data Science', 'Software Development', 'Cybersecurity', 'Cloud Computing', 'Networking', 'IoT', 'Digital Systems', 'Emerging Technologies' ),
 			'image' => 'kencid-source/school-information-technology.jpg',
 		),
 		array(
-			'name' => 'School of Engineering & Automotive Design',
-			'intro' => 'Combine technical thinking with the imagination to move products and mobility forward.',
-			'courses' => array( 'Transportation Design', 'Electronic Design', 'Automotive Restoration', 'Automotive Design', 'Electrical Engineering', 'Structural Engineering', 'Mechanical Engineering' ),
-			'image' => 'kencid-source/school-engineering.jpg',
+			'name' => 'School of Media, Communication & Digital Content',
+			'intro' => 'Create, communicate and distribute information across traditional and emerging media.',
+			'courses' => array( 'Journalism', 'Radio', 'Television', 'Film', 'Photography', 'Videography', 'Documentary', 'Podcasting', 'Digital Content', 'Social Media', 'Advertising', 'Public Relations', 'Corporate Communication' ),
+			'image' => 'kencid-source/school-media.jpeg',
 		),
 		array(
-			'name' => 'School of Business Management',
-			'intro' => 'Develop the strategy, leadership, and enterprise skills behind creative work.',
-			'courses' => array( 'Advertising and Branding', 'Branded Entertainment', 'Business Management', 'Creative Business Leadership', 'Design Management', 'Fashion Marketing and Management', 'Fibres', 'Business Innovation', 'Social Media Strategy and Management', 'Social Media Management', 'Fashion and Visual Merchandising', 'Public Relations' ),
+			'name' => 'School of Business, Entrepreneurship & Management',
+			'intro' => 'Build and manage organisations, enterprises and professional opportunities.',
+			'courses' => array( 'Entrepreneurship', 'Business Management', 'Marketing', 'Digital Marketing', 'Accounting', 'Finance', 'Human Resource Management', 'Procurement', 'Supply Chain', 'Project Management', 'Creative Enterprise', 'E-Commerce', 'Innovation' ),
 			'image' => 'kencid-source/school-business.webp',
 		),
 		array(
-			'name' => 'School of Creative & Performing Arts',
-			'intro' => 'Make, perform, and tell stories that connect with audiences.',
-			'courses' => array( 'Art Education', 'Acting', 'Dance', 'Vocal Performance', 'Creative Writing', 'Dramatic Writing', 'Ceramic Arts', 'Music', 'Art History', 'Writing for Film, TV and Digital Media', 'Painting', 'Photography', 'Sculpture', 'Television Production', 'Sound Design', 'Music Production', 'Music Scoring and Composition', 'Drawing' ),
-			'image' => 'kencid-source/school-creative-performing-arts.jpg',
-		),
-		array(
-			'name' => 'School of Hospitality Management',
-			'intro' => 'Prepare for guest experiences, operations, travel, and service leadership.',
-			'courses' => array( 'Hotel & Restaurant Management', 'Tourism & Travel Management', 'Food & Beverage Management', 'Food Production Technician - Culinary Arts', 'Management of Travel & Tourism Operations', 'Housekeeping and Accommodation Operations', 'Tour Operations', 'Tourism Marketing & Promotion', 'Front Office Operations' ),
+			'name' => 'School of Hospitality, Tourism & Culinary Arts',
+			'intro' => 'Prepare for hospitality, tourism, culinary, events and experience industries.',
+			'courses' => array( 'Hospitality', 'Hotels', 'Restaurants', 'Culinary Arts', 'Baking', 'Pastry', 'Tourism', 'Travel', 'Events', 'Guest Experience', 'Hospitality Operations', 'Hospitality Entrepreneurship' ),
 			'image' => 'kencid-source/school-hospitality-management.jpg',
 		),
 		array(
-			'name' => 'School of Health Sciences',
-			'intro' => 'Build practical skills for people-centred health and community services.',
-			'courses' => array( 'Community Health Worker', 'Health Records and Information Technology', 'Human Nutrition and Dietetics', 'Perioperative Theatre Technology', 'Orthopedic Technology', 'Pharmacy', 'Clinical Medicine and Surgery', 'Occupational Therapy' ),
+			'name' => 'School of Health Sciences & Allied Health',
+			'intro' => 'Prepare competent professionals for health, wellness, community and allied-health environments.',
+			'courses' => array( 'Community Health', 'Nutrition', 'Dietetics', 'Allied Health', 'Rehabilitation', 'Occupational Health', 'Orthopaedic Technology', 'Perioperative Technology', 'Pharmaceutical Sciences', 'Health Information', 'Digital Health' ),
 			'image' => 'kencid-source/school-health-sciences.webp',
-		),
-		array(
-			'name' => 'School of Trades & Technology',
-			'intro' => 'Get hands-on with the technical skills that keep the built environment moving.',
-			'courses' => array( 'Electrical and Electronic Engineering', 'Plumbing', 'Masonry', 'Tiling', 'Partitioning and Ceiling Installation', 'Auto Technician', 'Mechanical and Automotive Engineering', 'Welding and Fabrication', 'Automotive Engineering', 'Carpentry and Joinery' ),
-			'image' => 'kencid-source/school-engineering.jpg',
 		),
 	);
 }
@@ -481,10 +486,10 @@ function kcid_catalog_programs(): array {
 				'careers'       => $detail['careers'],
 				'pathways'      => $detail['pathways'],
 				'tile'          => '',
-				'duration'      => '6 / 3 / 2 semesters',
-				'mode'          => 'Full-time & evening',
-				'entry'         => 'Diploma C- / Certificate D / Foundation D-',
-				'qualification' => 'Diploma / Certificate / Foundation',
+				'duration'      => 'Confirm with admissions',
+				'mode'          => 'Subject to programme availability',
+				'entry'         => 'Confirm current requirements with admissions',
+				'qualification' => 'Programme area',
 				'intake'        => $next_intake['label'],
 				'image'         => $course_image,
 			);
@@ -497,11 +502,11 @@ function kcid_catalog_programs(): array {
 
 function kcid_reasons(): array {
 	return array(
-		array( 'icon' => 'cap', 'title' => 'Industry-Aligned Curriculum', 'text' => 'Programs are designed around practical studio learning and real-world outcomes.' ),
+		array( 'icon' => 'cap', 'title' => 'Practical, Applied Learning', 'text' => 'Programme areas connect knowledge with making, testing, projects and real-world outcomes.' ),
 		array( 'icon' => 'user', 'title' => 'Expert Faculty & Mentorship', 'text' => 'Students learn from seasoned professionals and creative practitioners.' ),
 		array( 'icon' => 'tools', 'title' => 'Hands-On Learning', 'text' => 'Studios, workshops, models, material boards, and live projects shape each journey.' ),
-		array( 'icon' => 'briefcase', 'title' => 'Career Ready', 'text' => 'Portfolio building, internships, and placement support prepare students for work.' ),
-		array( 'icon' => 'globe', 'title' => 'Modern Facilities', 'text' => 'Students work in creative studios, labs, workshops, and library resources.' ),
+		array( 'icon' => 'briefcase', 'title' => 'Practice & Enterprise', 'text' => 'Projects, industry engagement, professional practice and entrepreneurship turn competence into value.' ),
+		array( 'icon' => 'globe', 'title' => 'Studios, Labs & Workshops', 'text' => 'Learners work across studios, laboratories, workshops and applied learning environments.' ),
 		array( 'icon' => 'community', 'title' => 'Vibrant Community', 'text' => 'A diverse creative environment helps students collaborate and grow.' ),
 	);
 }

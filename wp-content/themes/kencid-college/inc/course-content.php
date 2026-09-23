@@ -81,20 +81,20 @@ function kcid_course_pathways(): array {
 	$pathways = array(
 		array(
 			'label'      => 'Diploma program',
-			'entry'      => 'KCSE C- or an accredited and recognized equivalent',
-			'duration'   => '6 semesters',
+			'entry'      => 'Confirm the current entry requirements with admissions',
+			'duration'   => 'Subject to the approved programme structure',
 			'credential' => 'Diploma',
 		),
 		array(
 			'label'      => 'Certificate program',
-			'entry'      => 'KCSE D or an accredited and recognized equivalent',
-			'duration'   => '3 semesters',
+			'entry'      => 'Confirm the current entry requirements with admissions',
+			'duration'   => 'Subject to the approved programme structure',
 			'credential' => 'Certificate',
 		),
 		array(
 			'label'      => 'Foundation program',
-			'entry'      => 'KCSE D- or an accredited and recognized equivalent',
-			'duration'   => '2 semesters',
+			'entry'      => 'Confirm the current entry requirements with admissions',
+			'duration'   => 'Subject to the approved programme structure',
 			'credential' => 'Foundation',
 		),
 	);
@@ -595,7 +595,19 @@ function kcid_school_course_defaults( string $title, string $school ): array {
 		),
 	);
 
-	$detail = $defaults[ $school ] ?? $defaults['School of Design'];
+	$school_defaults = array(
+		'School of Building Sciences & Spatial Design'               => 'School of Building Sciences',
+		'School of Design, Creative & Performing Arts'               => 'School of Design',
+		'School of Engineering, Mobility & Manufacturing Technology' => 'School of Engineering & Automotive Design',
+		'School of Trades, Technical & Applied Technology'           => 'School of Trades & Technology',
+		'School of Computing, Information & Digital Technology'      => 'School of Information Technology',
+		'School of Media, Communication & Digital Content'           => 'School of Media and Communication',
+		'School of Business, Entrepreneurship & Management'          => 'School of Business Management',
+		'School of Hospitality, Tourism & Culinary Arts'             => 'School of Hospitality Management',
+		'School of Health Sciences & Allied Health'                  => 'School of Health Sciences',
+	);
+	$default_school = $school_defaults[ $school ] ?? 'School of Design';
+	$detail = $defaults[ $default_school ];
 	return $detail;
 }
 

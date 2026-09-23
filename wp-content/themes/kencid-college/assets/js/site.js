@@ -347,7 +347,7 @@
       const meta = card.querySelector('.course-card__meta');
 
       if (meta) {
-        meta.innerHTML = '<span class="course-card__badge course-card__badge--diploma"><svg class="course-card__meta-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m2 9 10-5 10 5-10 5L2 9Z"/><path d="M6 11v5c3 3 9 3 12 0v-5"/></svg>Diploma</span><span class="course-card__badge course-card__badge--certificate"><svg class="course-card__meta-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-5"/></svg>Certificate</span><span class="course-card__badge course-card__badge--foundation"><svg class="course-card__meta-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m21 8-9-5-9 5 9 5 9-5Z"/><path d="M3 8v8l9 5 9-5V8M12 13v8"/></svg>Foundation</span><span class="course-card__duration"><svg class="course-card__meta-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg><strong>6 / 3 / 2</strong> semesters</span>';
+        meta.innerHTML = '<span class="course-card__badge course-card__badge--diploma"><svg class="course-card__meta-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m2 9 10-5 10 5-10 5L2 9Z"/><path d="M6 11v5c3 3 9 3 12 0v-5"/></svg>Diploma</span><span class="course-card__badge course-card__badge--certificate"><svg class="course-card__meta-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-5"/></svg>Certificate</span><span class="course-card__badge course-card__badge--foundation"><svg class="course-card__meta-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m21 8-9-5-9 5 9 5 9-5Z"/><path d="M3 8v8l9 5 9-5V8M12 13v8"/></svg>Foundation</span>';
       }
 
       if (body && detailsLink && !body.querySelector('.course-card__actions')) {
@@ -869,5 +869,45 @@
         status.textContent = 'Thank you — your application details are ready for review.';
       }
     });
+  }
+
+  const teamProfileDialog = document.querySelector('#team-profile-dialog');
+  const teamProfileButtons = Array.from(document.querySelectorAll('[data-team-profile]'));
+
+  if (teamProfileDialog && teamProfileButtons.length && typeof teamProfileDialog.showModal === 'function') {
+    const profileImage = teamProfileDialog.querySelector('.team-profile-dialog__media img');
+    const profileName = teamProfileDialog.querySelector('#team-profile-name');
+    const profileRole = teamProfileDialog.querySelector('#team-profile-role');
+    const closeButton = teamProfileDialog.querySelector('.team-profile-dialog__close');
+    let profileTrigger = null;
+
+    const closeProfile = () => {
+      if (teamProfileDialog.open) teamProfileDialog.close();
+    };
+
+    teamProfileButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        profileTrigger = button;
+        const { teamName, teamRole, teamImage } = button.dataset;
+
+        if (profileImage) {
+          profileImage.src = teamImage || '';
+          profileImage.alt = teamName ? `${teamName}, ${teamRole || 'KENCID team member'}` : 'KENCID team member';
+        }
+        if (profileName) profileName.textContent = teamName || 'KENCID team member';
+        if (profileRole) profileRole.textContent = teamRole || 'KENCID team member';
+
+        teamProfileDialog.showModal();
+        closeButton?.focus();
+      });
+    });
+
+    closeButton?.addEventListener('click', closeProfile);
+
+    teamProfileDialog.addEventListener('click', (event) => {
+      if (event.target === teamProfileDialog) closeProfile();
+    });
+
+    teamProfileDialog.addEventListener('close', () => profileTrigger?.focus());
   }
 })();
